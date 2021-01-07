@@ -23,7 +23,7 @@
           name="username"
           type="text"
           tabindex="1"
-          auto-complete="on"
+          auto-complete="fale"
         />
       </el-form-item>
 
@@ -102,9 +102,7 @@ export default {
       passwordType: "password",
     };
   },
-  watch: {
-    
-  },
+  watch: {},
   methods: {
     showPwd() {
       if (this.passwordType === "password") {
@@ -160,14 +158,14 @@ $cursor: #fff;
 
     input {
       background: transparent;
-      border: 0px;
+      
       -webkit-appearance: none;
       border-radius: 0px;
       padding: 12px 5px 12px 15px;
-      color: $light_gray;
+      color: #fff;
       height: 47px;
       caret-color: $cursor;
-
+      border: 0;
       &:-webkit-autofill {
         box-shadow: 0 0 0px 1000px $bg inset !important;
         -webkit-text-fill-color: $cursor !important;
@@ -181,27 +179,38 @@ $cursor: #fff;
     border-radius: 5px;
     color: #454545;
   }
+  .el-form-item__error {
+    color: #fff;
+  }
 }
 </style>
 
 <style lang="scss" scoped>
 $bg: #2d3a4b;
 $dark_gray: #889aa4;
-$light_gray: #eee;
+$light_gray: #0d0c22;
 
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-color: $bg;
-  overflow: hidden;
 
+  background: -webkit-linear-gradient(to right, #ff498a, #ffc47c);
+  background: linear-gradient(to right, #ff498a, #ffc47c);
+  position: relative;
+  overflow: hidden;
   .login-form {
-    position: relative;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 520px;
     max-width: 100%;
-    padding: 160px 35px 0;
+    padding: 20px 35px;
+    border-radius: 10px;
     margin: 0 auto;
     overflow: hidden;
+    background-color: rgba(202, 188, 188, 0.3);
+    box-shadow: 10px 10px 5px #888;
   }
 
   .tips {
