@@ -5,48 +5,45 @@
       :model="loginForm"
       :rules="loginRules"
       class="login-form"
-      auto-complete="on"
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">登 录</h3>
       </div>
 
       <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
+        <span class="svg-icon">
+          <svg-icon icon-class="icon-yonghuming" class="func-svg" />
         </span>
         <el-input
           ref="username"
           v-model="loginForm.username"
-          placeholder="Username"
+          placeholder="请输入用户名"
           name="username"
           type="text"
           tabindex="1"
-          auto-complete="fale"
+          auto-complete="off"
         />
       </el-form-item>
 
       <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password" />
+        <span class="svg-icon">
+          <svg-icon
+            icon-class="icon-tubiaozhizuomobanyihuifu-"
+            class="func-svg"
+          />
         </span>
         <el-input
           :key="passwordType"
           ref="password"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="Password"
-          name="password"
-          tabindex="2"
-          auto-complete="on"
+          placeholder="请输入密码"
+          name="Password"
+          tabindex="1"
+          auto-complete="off"
           @keyup.enter.native="handleLogin"
         />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon
-            :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
-          />
-        </span>
       </el-form-item>
 
       <el-button
@@ -58,8 +55,8 @@
       >
 
       <div class="tips">
-        <span style="margin-right: 20px">username: admin</span>
-        <span> password: any</span>
+        <span style="margin-right: 20px">忘记密码？</span>
+        <span @click="jumpRegister">点击注册</span>
       </div>
     </el-form>
   </div>
@@ -87,8 +84,8 @@ export default {
     };
     return {
       loginForm: {
-        username: "admin",
-        password: "111111",
+        username: "",
+        password: "",
       },
       loginRules: {
         username: [
@@ -104,15 +101,8 @@ export default {
   },
   watch: {},
   methods: {
-    showPwd() {
-      if (this.passwordType === "password") {
-        this.passwordType = "";
-      } else {
-        this.passwordType = "password";
-      }
-      this.$nextTick(() => {
-        this.$refs.password.focus();
-      });
+    jumpRegister(){
+      this.$router.push({path: '/register'})
     },
     handleLogin() {
       this.$refs.loginForm.validate((valid) => {
@@ -158,7 +148,7 @@ $cursor: #fff;
 
     input {
       background: transparent;
-      
+
       -webkit-appearance: none;
       border-radius: 0px;
       padding: 12px 5px 12px 15px;
@@ -180,7 +170,7 @@ $cursor: #fff;
     color: #454545;
   }
   .el-form-item__error {
-    color: #fff;
+    color: #ef2929;
   }
 }
 </style>
@@ -189,7 +179,7 @@ $cursor: #fff;
 $bg: #2d3a4b;
 $dark_gray: #889aa4;
 $light_gray: #0d0c22;
-
+$jump: #4b45a1;
 .login-container {
   min-height: 100%;
   width: 100%;
@@ -215,10 +205,14 @@ $light_gray: #0d0c22;
 
   .tips {
     font-size: 14px;
-    color: #fff;
+    color: $jump;
     margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    text-decoration: underline;
 
     span {
+      cursor: pointer;
       &:first-of-type {
         margin-right: 16px;
       }
@@ -238,7 +232,7 @@ $light_gray: #0d0c22;
 
     .title {
       font-size: 26px;
-      color: $light_gray;
+      color: #fff;
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;
@@ -254,5 +248,9 @@ $light_gray: #0d0c22;
     cursor: pointer;
     user-select: none;
   }
+}
+.svg-icon {
+  padding-left: 2px;
+  width: 2em;
 }
 </style>

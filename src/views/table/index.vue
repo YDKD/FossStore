@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-12-26 14:10:18
+ * @LastEditTime: 2021-01-08 12:02:34
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \FossStore\src\views\table\index.vue
+-->
 <template>
   <div class="app-container">
     <el-table
@@ -44,7 +52,7 @@
 </template>
 
 <script>
-import { getList } from '@/api/table'
+// import { getList } from '@/api/chartData'
 
 export default {
   filters: {
@@ -68,11 +76,11 @@ export default {
   },
   methods: {
     fetchData() {
-      this.listLoading = true
-      getList().then(response => {
-        this.list = response.data.items
-        this.listLoading = false
-      })
+      // this.listLoading = true
+      // getList().then(response => {
+      //   this.list = response.data.items
+      //   this.listLoading = false
+      // })
     }
   }
 }

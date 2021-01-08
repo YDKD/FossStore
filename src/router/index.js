@@ -28,6 +28,11 @@ export const constantRoutes = [
     component: () => import('@/views/ErrorPage/404.vue'),
     hidden: true
   },
+  {
+    path: '/register',
+    component: () => import('@/views/register/index'),
+    hidden: true
+  },
 
   {
     path: '/dashboard',

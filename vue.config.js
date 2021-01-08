@@ -14,7 +14,12 @@ const name = defaultSettings.title || 'YDKD DEVELOPMENT' // page title
 // You can change the port by the following methods:
 // port = 9528 npm run dev OR npm run dev --port = 9528
 const port = process.env.port || process.env.npm_config_port || 10001 // dev port
-
+let url1 = ''
+if (process.env.NODE_ENV === 'development') {
+  url1 = 'http://localhost:3009'
+} else {
+  url1 = 'http://47.99.75.187:3009'
+}
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
   /**
@@ -35,6 +40,16 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
+    },
+    proxy: {
+      "/auth": {
+        target: url1,
+        pathRewrite: { "^/auth": "/auth" }
+      },
+      "/user": {
+        target: url1,
+        pathRewrite: { "^/user": "/user" }
+      },
     }
   },
   configureWebpack: {
@@ -86,7 +101,7 @@ module.exports = {
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
             .use('script-ext-html-webpack-plugin', [{
-            // `runtime` must same as runtimeChunk name. default is `runtime`
+              // `runtime` must same as runtimeChunk name. default is `runtime`
               inline: /runtime\..*\.js$/
             }])
             .end()
