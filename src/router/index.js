@@ -33,6 +33,11 @@ export const constantRoutes = [
     component: () => import('@/views/register/index'),
     hidden: true
   },
+  {
+    path: '/password-reset',
+    component: () => import('@/views/modifyAccount/reset-password'),
+    hidden: true
+  },
 
   {
     path: '/dashboard',

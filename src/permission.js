@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-12-26 14:10:18
- * @LastEditTime: 2021-01-08 09:53:16
- * @LastEditors: your name
+ * @LastEditTime: 2021-01-09 14:30:15
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \FossStore\src\permission.js
  */
@@ -16,7 +16,7 @@ import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login', '/404', '/index', '/', '/register'] // no redirect whitelist
+const whiteList = ['/login', '/404', '/index', '/', '/register', '/password-reset'] // no redirect whitelist
 
 
 router.beforeEach(async (to, from, next) => {

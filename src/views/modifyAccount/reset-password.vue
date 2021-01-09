@@ -1,9 +1,12 @@
 <!--
-* @description 
-* @fileName index.vue
-* @author YDKD
-* @date 2021/01/08 09:50:53
-!-->
+ * @Author: your name
+ * @Date: 2021-01-09 14:28:38
+ * @LastEditTime: 2021-01-09 16:05:13
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \FossStore\src\views\modifyAccount\reset-password.vue
+-->
+
 <template>
   <div class="register-container">
     <el-form
@@ -15,17 +18,8 @@
       label-width="100px"
     >
       <div class="title-container">
-        <h3 class="title">注 册</h3>
+        <h3 class="title">密 码 重 置</h3>
       </div>
-      <el-form-item label="用户名:" prop="username">
-        <el-input v-model="registerForm.username"></el-input>
-      </el-form-item>
-      <el-form-item label="密码:" prop="password">
-        <el-input type="password" v-model="registerForm.password"></el-input>
-      </el-form-item>
-      <el-form-item label="确认密码:" prop="rePassword">
-        <el-input type="password" v-model="registerForm.rePassword"></el-input>
-      </el-form-item>
       <el-form-item label="邮箱:" prop="email">
         <el-input
           type="email"
@@ -45,19 +39,25 @@
             type="primary"
             plain
             size="default"
-            :disabled="isDisabled"
             @click="sendCode"
+            :disabled="isDisabled"
             >{{ sendText }}</el-button
           >
         </el-col>
       </el-row>
+      <el-form-item label="新密码:" prop="password">
+        <el-input type="password" v-model="registerForm.password"></el-input>
+      </el-form-item>
+      <el-form-item label="确认新密码:" prop="rePassword">
+        <el-input type="password" v-model="registerForm.rePassword"></el-input>
+      </el-form-item>
       <el-form-item>
         <div class="btnWrap clearfix">
           <p class="tipText">
-            已有账号？<span @click="handleToLogin">点击登录</span>
+            <span @click="handleToLogin">返回登录</span>
           </p>
           <el-button type="primary" @click="submitRegister('ruleForm')"
-            >注 册</el-button
+            >确 认</el-button
           >
         </div>
       </el-form-item>
@@ -67,29 +67,11 @@
 
 <script>
 import { validatorUsernameExist, validatorEmailExist } from "@/api/chartData";
-import { senEmailCode, createUser } from "@/api/postApi";
+import { senEmailCode, resetPassword } from "@/api/postApi";
 import { encryption, decrypt } from "@/utils/crypt";
 export default {
-  name: "register",
+  name: "reset-password",
   data() {
-    var validatorUsername = (rule, value, callback) => {
-      if (!value) {
-        callback("请输入用户名");
-      } else {
-        let reg = /^[\u4E00-\u9FA5A-Za-z0-9]+$/;
-        if (!reg.test(value)) {
-          callback(new Error("名字不能包含特殊字符"));
-        } else {
-          validatorUsernameExist(value).then((res) => {
-            if (res.data.status == 201) {
-              callback(res.data.msg);
-            } else {
-              callback();
-            }
-          });
-        }
-      }
-    };
     var validatorPassword = (rule, value, callback) => {
       if (!value) {
         callback(new Error("请输入密码"));
@@ -115,11 +97,11 @@ export default {
         let reg = /^[a-zA-Z0-9_-]+@([a-z0-9]+[-a-z0-9]*[a-z0-9]+\.)+(com|cn|net|org)$/;
         if (reg.test(value)) {
           validatorEmailExist(value).then((res) => {
-            if (res.data.status == 201) {
-              callback('该邮箱已被注册');
+            if (res.data.status == 200) {
+              callback("该邮箱不存在");
             } else {
+              this.passValidatorEmail = true;
               this.isDisabled = false;
-              this.passValidatorEmail = true
               callback();
             }
           });
@@ -130,16 +112,12 @@ export default {
     };
     return {
       registerForm: {
-        username: "",
         password: "",
         rePassword: "",
         email: "",
         code: "",
       },
       registerRules: {
-        username: [
-          { required: true, validator: validatorUsername, trigger: "blur" },
-        ],
         password: [
           { required: true, validator: validatorPassword, trigger: "blur" },
           {
@@ -160,8 +138,8 @@ export default {
       sendText: "发送验证码",
       passValidatorEmail: false,
       msgTime: 60,
-      timer: null,
       isDisabled: true,
+      timer: null,
     };
   },
   methods: {
@@ -177,8 +155,8 @@ export default {
           if (res.data.status === 200) {
             this.$message.success("验证码发送成功");
             this.isDisabled = true;
-            let that = this
-             that.timer = setInterval(() => {
+            let that = this;
+            that.timer = setInterval(() => {
               this.msgTime--;
               this.sendText = this.msgTime + "秒后重试";
               if (this.msgTime === 0) {
@@ -209,16 +187,16 @@ export default {
           let para = {
             data: encryption(params),
           };
-          createUser(para).then((res) => {
+          resetPassword(para).then((res) => {
             if (res.data.status === 202) {
               // 邮箱验证码不正确
               this.$message.error(res.data.msg);
             } else {
               if (res.data.status === 201) {
-                // 创建用户失败
+                // 密码重置失败
                 this.$message.error(res.data.msg);
               } else {
-                // 创建用户成功
+                // 密码重置失败
                 this.$message.success(res.data.msg);
                 this.$refs.registerForm.resetFields();
                 this.$router.push({ path: "/login" });
@@ -230,8 +208,8 @@ export default {
     },
   },
   beforeDestroy() {
-    clearInterval(this.timer)
-  }
+    clearInterval(this.timer);
+  },
 };
 </script>
 <style lang='scss' scoped>
@@ -274,6 +252,7 @@ export default {
     background-color: #fff;
     border-color: #7da8c3;
   }
+  
 
   ::v-deep .el-form-item__error {
     color: red;
@@ -301,3 +280,4 @@ export default {
   }
 }
 </style>
+

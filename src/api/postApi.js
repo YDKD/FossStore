@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-08 14:57:51
- * @LastEditTime: 2021-01-08 17:18:50
+ * @LastEditTime: 2021-01-09 15:54:04
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \FossStore\src\api\postApi.js
@@ -19,16 +19,24 @@ export function senEmailCode(data) { // 验证用户名是否被注册
 
 export function createUser(data) { // 创建用户
     return request({
-        url: '/user/email/code',
+        url: '/user/create',
         method: 'post',
         data
     })
 }
 
 
-export function encryptData(data) { // 创建用户
+export function resetPassword(data) { // 重置密码
     return request({
-        url: '/auth/decrypt',
+        url: '/user/reset-password',
+        method: 'post',
+        data
+    })
+}
+
+export function login(data) { // 登录
+    return request({
+        url: '/auth/login',
         method: 'post',
         data
     })

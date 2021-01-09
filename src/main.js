@@ -1,3 +1,12 @@
+/*
+ * @Author: your name
+ * @Date: 2020-12-26 14:10:18
+ * @LastEditTime: 2021-01-09 16:54:40
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * 
+ * @FilePath: \FossStore\src\main.js
+ */
 import Vue from 'vue'
 
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets

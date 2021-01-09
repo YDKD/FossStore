@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-08 16:51:22
- * @LastEditTime: 2021-01-08 18:05:19
+ * @LastEditTime: 2021-01-09 11:45:14
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \FossStore\src\utils\crypt.js
@@ -14,26 +14,26 @@ function encryption(data) {
   // let publicKeyEn =
   //   'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDBhU96rEIwrZH2tAA+YfpzJSZwONtHESXy4cuUI02X4IKw9k4wXFD33tYF0Lx9maysDqhNs0FUgsQ+cf3ebWrLU0tNFnIjI9C0pUFynAXYIDgzYtZ66J6yX3ulzjZMT2M+YLG99NhP4vf+0JbPnmXonXYyCnN5R682UL2OFj+IxwIDAQAB'
   let publicKeyEn = `-----BEGIN PUBLIC KEY-----
-  MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDPov+Ru/4BYMW5znn57ZURLmM
-  oN1WphfDOiIvCcQAfiH9276AxvzhQ6RPmCO6+KyNZlyCqQl54ALcZ3tGxxisY1Qx
-  BJ4m7z63HDFKjHvqLk7UaEpqyD4z53rgFrwnXKPitysMsgvMUwBrbZXDKLNnrOcx
-  nWVaDLHrixfXhkqBxQIDAQAB
+  MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC3Ino3TKtMe2UfYeKmnH1Xi9Gf
+  nBiYCDH7awlnMMRAKyBP+4FXTYacw7jjXWWUon1xm/JcOXIgz5PuRWmEHdQqPEMv
+  IFx7B2xjH1NvMm9tKbgv3DjC+uYBqqwsDWAaUHmFTx9qE5Cl0vaNSCHQhJO6jtbv
+  r6trGCOQBYpTiTG6SQIDAQAB
   -----END PUBLIC KEY-----`
   encryptEn.setPublicKey(publicKeyEn)
-  let rsaBa64 = encryptEn.encrypt(data)
-  // let userDetailBs64 = window.btoa(JSON.stringify(data))
-  // var strBs64Arr = []
-  // var n = 117
-  // for (var i = 0, l = userDetailBs64.length; i < l / n; i++) {
-  //   var a = userDetailBs64.slice(n * i, n * (i + 1))
-  //   strBs64Arr.push(a)
-  // }
-  // let rsaBs64 = []
-  // strBs64Arr.forEach(item => {
-  //   rsaBs64.push(encryptEn.encrypt(item))
-  // })
-  // rsaBs64 = window.btoa(rsaBs64.join(':'))
-  return rsaBa64
+  // let rsaBa64 = encryptEn.encrypt(data)
+  let userDetailBs64 = JSON.stringify(data)
+  var strBs64Arr = []
+  var n = 117
+  for (var i = 0, l = userDetailBs64.length; i < l / n; i++) {
+    var a = userDetailBs64.slice(n * i, n * (i + 1))
+    strBs64Arr.push(a)
+  }
+  let rsaBs64 = []
+  strBs64Arr.forEach(item => {
+    rsaBs64.push(encryptEn.encrypt(item))
+  })
+  rsaBs64 = rsaBs64.join(':')
+  return rsaBs64
 }
 
 function decrypt(data) {

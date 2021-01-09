@@ -55,7 +55,9 @@
       >
 
       <div class="tips">
-        <span style="margin-right: 20px">忘记密码？</span>
+        <span style="margin-right: 20px" @click="jumpResetPassword"
+          >忘记密码？</span
+        >
         <span @click="jumpRegister">点击注册</span>
       </div>
     </el-form>
@@ -64,20 +66,20 @@
 
 <script>
 import { validUsername } from "@/utils/validate";
-
+import { login } from "@/api/postApi";
 export default {
   name: "Login",
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error("Please enter the correct user name"));
+      if (!value) {
+        callback(new Error("请输入用户名"));
       } else {
         callback();
       }
     };
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error("The password can not be less than 6 digits"));
+      if (!value) {
+        callback(new Error("请输入密码"));
       } else {
         callback();
       }
@@ -101,20 +103,24 @@ export default {
   },
   watch: {},
   methods: {
-    jumpRegister(){
-      this.$router.push({path: '/register'})
+    jumpRegister() {
+      this.$router.push({ path: "/register" });
+    },
+    jumpResetPassword() {
+      this.$router.push({ path: "/password-reset" });
     },
     handleLogin() {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true;
-          this.$router.push({ path: "/404" });
-          // this.$store.dispatch('user/login', this.loginForm).then(() => {
-          //   this.$router.push({ path: this.redirect || '/' })
-          //   this.loading = false
-          // }).catch(() => {
-          //   this.loading = false
-          // })
+          // this.$router.push({ path: "/404" });
+          console.log(this.$store.getters)
+          this.$store.dispatch('user/loginUsername', this.loginForm).then(() => {
+            this.$router.push({ path: this.redirect || '/dashboard' })
+            this.loading = false
+          }).catch(() => {
+            this.loading = false
+          })
         } else {
           console.log("error submit!!");
           return false;
