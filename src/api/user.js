@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2020-12-26 14:10:18
- * @LastEditTime: 2021-01-09 15:59:47
- * @LastEditors: your name
+ * @LastEditTime: 2021-01-11 15:11:35
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \FossStore\src\api\user.js
  */
@@ -24,9 +24,9 @@ export function getInfo(token) {
   })
 }
 
-export function logout() {
+export function logout(username) {
   return request({
-    url: '/vue-admin-template/user/logout',
-    method: 'post'
+    url: `/auth/logout/${username}`,
+    method: 'get',
   })
 }

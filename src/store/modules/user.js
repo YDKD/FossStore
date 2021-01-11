@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-26 14:10:18
- * @LastEditTime: 2021-01-11 14:11:44
+ * @LastEditTime: 2021-01-11 15:09:54
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \FossStore\src\store\modules\user.js
@@ -55,7 +55,7 @@ const actions = {
         commit('SET_TOKEN', access_token)
         commit('EXP_TIME', data.exp)
         commit('USER_INFO', userInfo)
-        setToken(data.access_token)
+        setToken(access_token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -87,7 +87,7 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
+      logout(state.userInfo.username).then(() => {
         removeToken() // must remove  token  first
         resetRouter()
         commit('RESET_STATE')
