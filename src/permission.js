@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-26 14:10:18
- * @LastEditTime: 2021-01-09 14:30:15
+ * @LastEditTime: 2021-01-11 10:54:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \FossStore\src\permission.js
@@ -13,6 +13,7 @@ import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
+import Cookies from 'js-cookie'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -20,7 +21,7 @@ const whiteList = ['/login', '/404', '/index', '/', '/register', '/password-rese
 
 
 router.beforeEach(async (to, from, next) => {
-  if (whiteList.indexOf(to.path) != -1) {
+  if (Cookies.get('UserToken') || whiteList.indexOf(to.path) != -1) {
     next()
   }
   else {

@@ -1,14 +1,14 @@
 /*
  * @Author: your name
  * @Date: 2020-12-26 14:10:18
- * @LastEditTime: 2021-01-09 16:13:22
+ * @LastEditTime: 2021-01-11 10:46:40
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \FossStore\src\utils\auth.js
  */
 import Cookies from 'js-cookie'
 
-const TokenKey = 'TokenUser'
+const TokenKey = 'UserToken'
 
 export function getToken() {
   return Cookies.get(TokenKey)

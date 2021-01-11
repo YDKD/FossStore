@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-26 14:10:18
- * @LastEditTime: 2021-01-09 16:25:14
+ * @LastEditTime: 2021-01-11 14:11:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \FossStore\src\store\modules\user.js
@@ -9,13 +9,14 @@
 import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
-
+import { decrypt } from '@/utils/crypt'
 const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
     avatar: '',
-    exp: 0
+    exp: 0,
+    userInfo: ''
   }
 }
 
@@ -36,6 +37,9 @@ const mutations = {
   },
   EXP_TIME: (state, exp) => {
     state.exp = exp
+  },
+  USER_INFO: (state, userInfo) => {
+    state.userInfo = userInfo
   }
 }
 
@@ -46,8 +50,11 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        commit('SET_TOKEN', data.access_token)
+        let { access_token, userInfo } = decrypt(data.access_token)
+        // console.log(decrypt_data)
+        commit('SET_TOKEN', access_token)
         commit('EXP_TIME', data.exp)
+        commit('USER_INFO', userInfo)
         setToken(data.access_token)
         resolve()
       }).catch(error => {

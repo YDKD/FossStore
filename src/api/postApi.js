@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-08 14:57:51
- * @LastEditTime: 2021-01-09 15:54:04
+ * @LastEditTime: 2021-01-11 11:18:29
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \FossStore\src\api\postApi.js
@@ -37,6 +37,14 @@ export function resetPassword(data) { // 重置密码
 export function login(data) { // 登录
     return request({
         url: '/auth/login',
+        method: 'post',
+        data
+    })
+}
+
+export function encrypt(data) { // 加密
+    return request({
+        url: '/auth/encrypt',
         method: 'post',
         data
     })

@@ -66,7 +66,8 @@
 
 <script>
 import { validUsername } from "@/utils/validate";
-import { login } from "@/api/postApi";
+import { login, encrypt } from "@/api/postApi";
+import { decrypt, encryption } from "@/utils/crypt";
 export default {
   name: "Login",
   data() {
@@ -103,6 +104,17 @@ export default {
   },
   watch: {},
   methods: {
+    // 解密
+    decrypt() {
+      // let data =  {
+      //   data: '112323'
+      // }
+      // encrypt(data).then(res => {
+      //   let code = res.data
+      //   let result =  decrypt(code)
+      //   console.log(result)
+      // })
+    },
     jumpRegister() {
       this.$router.push({ path: "/register" });
     },
@@ -114,13 +126,16 @@ export default {
         if (valid) {
           this.loading = true;
           // this.$router.push({ path: "/404" });
-          console.log(this.$store.getters)
-          this.$store.dispatch('user/loginUsername', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/dashboard' })
-            this.loading = false
-          }).catch(() => {
-            this.loading = false
-          })
+          this.$store
+            .dispatch("user/loginUsername", this.loginForm)
+            .then(() => {
+              this.$router.push({ path: "/dashboard/dashboard" });
+              this.loading = false;
+              // console.log(this.$store.state.user.userInfo);
+            })
+            .catch(() => {
+              this.loading = false;
+            });
         } else {
           console.log("error submit!!");
           return false;

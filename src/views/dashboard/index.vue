@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2020-12-26 14:10:18
- * @LastEditTime: 2021-01-09 15:50:46
- * @LastEditors: your name
+ * @LastEditTime: 2021-01-11 14:18:31
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: \FossStore\src\views\dashboard\index.vue
 -->
@@ -13,16 +13,17 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'Dashboard',
+  name: "Dashboard",
+  created() {
+    console.log(this.$store.state.user.userInfo);
+  },
   computed: {
-    ...mapGetters([
-      'name'
-    ])
-  }
-}
+    ...mapGetters(["name"]),
+  },
+};
 </script>
 
 <style lang="scss" scoped>
