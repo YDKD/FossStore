@@ -61,12 +61,31 @@
         <span @click="jumpRegister">点击注册</span>
       </div>
     </el-form>
+    <div class="uploadWrap">
+      <div class="el-upload-dragger">
+        <div class="labelUplaod">
+          <i class="el-icon-upload fileUpload"></i>
+          <div class="el-upload__text">
+            将文件拖到此处，或
+            <em>点击上传</em>
+          </div>
+          <input
+            type="file"
+            ref="upload"
+            class="upload"
+            @change="beforeUpload"
+          />
+        </div>
+      </div>
+      <div class="tip_text">只能上传小于2GB的jar包、war包、zip包。</div>
+      <p class="uploadName">{{ uploadName }}</p>
+    </div>
   </div>
 </template>
 
 <script>
 import { validUsername } from "@/utils/validate";
-import { login, encrypt } from "@/api/postApi";
+import { login, encrypt, uploadFile } from "@/api/postApi";
 import { decrypt, encryption } from "@/utils/crypt";
 export default {
   name: "Login",
@@ -86,6 +105,8 @@ export default {
       }
     };
     return {
+      uploadName: "",
+      file: "",
       loginForm: {
         username: "",
         password: "",
@@ -104,6 +125,21 @@ export default {
   },
   watch: {},
   methods: {
+    // 上传文件
+    beforeUpload(file) {
+      // 后缀
+      let testmsg = file.target.files[0].name.slice(
+        file.target.files[0].name.lastIndexOf(".") + 1
+      );
+      // 文件信息
+      this.uploadName = file.target.files[0].name;
+      this.file = file.target.files[0];
+      let data = new FormData()
+      data.append('file', this.file)
+      uploadFile(data).then((res) => {
+        console.log(res);
+      });
+    },
     // 解密
     decrypt() {
       // let data =  {
@@ -197,6 +233,68 @@ $cursor: #fff;
 </style>
 
 <style lang="scss" scoped>
+.uploadWrap {
+  width: 400px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+.el-upload-dragger {
+  width: 380px;
+  height: 200px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  box-sizing: border-box;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+.uploadWrap:hover {
+  border-color: #409eff;
+}
+.el-upload__text {
+  color: #606266;
+  font-size: 14px;
+  text-align: center;
+  em {
+    color: #409eff;
+    font-style: normal;
+  }
+}
+.tip_text {
+  font-size: 12px;
+  color: #606266;
+  margin-top: 7px;
+  padding-left: 15px;
+}
+.upload {
+  position: absolute;
+  left: 0px;
+  top: 2px;
+  width: 49px;
+  cursor: pointer;
+  opacity: 0;
+  padding: 85px 190px;
+}
+.fileUpload {
+  cursor: pointer;
+  font-size: 67px;
+  color: #c0c4cc;
+  margin: 40px 0 16px;
+  line-height: 50px;
+}
+.upload:hover {
+  cursor: pointer;
+}
+.labelUplaod {
+  line-height: 20px;
+}
+.uploadName {
+  line-height: 20px;
+  margin: 10px;
+}
+
 $bg: #2d3a4b;
 $dark_gray: #889aa4;
 $light_gray: #0d0c22;
