@@ -10,13 +10,13 @@ import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 import { decrypt } from '@/utils/crypt'
+import { Message } from 'element-ui'
 const getDefaultState = () => {
   return {
-    token: getToken(),
     name: '',
     avatar: '',
-    exp: 0,
-    userInfo: ''
+    exp: sessionStorage.getItem(`exp`) || 0,
+    userInfo: JSON.parse(sessionStorage.getItem('userInfo')) || ''
   }
 }
 
@@ -26,9 +26,6 @@ const mutations = {
   RESET_STATE: (state) => {
     Object.assign(state, getDefaultState())
   },
-  SET_TOKEN: (state, token) => {
-    state.token = token
-  },
   SET_NAME: (state, name) => {
     state.name = name
   },
@@ -36,9 +33,11 @@ const mutations = {
     state.avatar = avatar
   },
   EXP_TIME: (state, exp) => {
+    sessionStorage.setItem(`exp`, exp)
     state.exp = exp
   },
   USER_INFO: (state, userInfo) => {
+    sessionStorage.setItem(`userInfo`, JSON.stringify(userInfo))
     state.userInfo = userInfo
   }
 }
@@ -50,13 +49,16 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        let { access_token, userInfo } = decrypt(data.access_token)
-        // console.log(decrypt_data)
-        commit('SET_TOKEN', access_token)
-        commit('EXP_TIME', data.exp)
-        commit('USER_INFO', userInfo)
-        setToken(access_token)
-        resolve()
+        if (data.code == 50008 || data.code == 50009) {
+          return reject(Message.error(data.msg))
+        } else {
+          let { access_token, userInfo, routerList } = decrypt(data.access_token)
+          console.log(routerList)
+          commit('EXP_TIME', data.exp)
+          commit('USER_INFO', userInfo)
+          setToken(access_token)
+          resolve()
+        }
       }).catch(error => {
         reject(error)
       })
@@ -86,6 +88,7 @@ const actions = {
 
   // user logout
   logout({ commit, state }) {
+    console.log(state.userInfo)
     return new Promise((resolve, reject) => {
       logout(state.userInfo.username).then(() => {
         removeToken() // must remove  token  first

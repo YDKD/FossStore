@@ -57,9 +57,12 @@ function decrypt(data) {
   // 分段
   let strArr = data.split(':')
   let userInfo = JSON.parse(encrypt.decrypt(strArr[1]))
+  let routerList = JSON.parse(encrypt.decrypt(strArr[2]))
+  console.log(encrypt.decrypt(strArr[2]))
   return {
     access_token: strArr[0],
-    userInfo: userInfo
+    userInfo: userInfo,
+    routerList
   }
 }
 

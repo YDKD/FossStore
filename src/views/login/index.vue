@@ -61,7 +61,7 @@
         <span @click="jumpRegister">点击注册</span>
       </div>
     </el-form>
-    <div class="uploadWrap">
+    <!-- <div class="uploadWrap">
       <div class="el-upload-dragger">
         <div class="labelUplaod">
           <i class="el-icon-upload fileUpload"></i>
@@ -79,7 +79,7 @@
       </div>
       <div class="tip_text">只能上传小于2GB的jar包、war包、zip包。</div>
       <p class="uploadName">{{ uploadName }}</p>
-    </div>
+    </div> -->
   </div>
 </template>
 
