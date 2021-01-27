@@ -119,8 +119,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       logout(state.userInfo.username).then(() => {
         removeToken() // must remove  token  first
-        // resetRouter()
-        commit('RESET_STATE')
+        resetRouter()
+        // commit('RESET_STATE')
         resolve()
       }).catch(error => {
         reject(error)
@@ -132,7 +132,7 @@ const actions = {
   resetToken({ commit }) {
     return new Promise(resolve => {
       removeToken() // must remove  token  first
-      commit('RESET_STATE')
+      // commit('RESET_STATE')
       resolve()
     })
   }

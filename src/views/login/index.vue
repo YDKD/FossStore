@@ -108,8 +108,8 @@ export default {
       uploadName: "",
       file: "",
       loginForm: {
-        username: "",
-        password: "",
+        username: "ydkd",
+        password: "123",
       },
       loginRules: {
         username: [

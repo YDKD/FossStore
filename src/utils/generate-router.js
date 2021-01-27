@@ -1,3 +1,4 @@
+import Layout from '@/layout'
 // 将返回的路由列表，根据id对应关系生成对应的树形
 function formatRouterTree(data) {
     let parents = data.filter((p) => p.pid == 0),
@@ -46,6 +47,7 @@ function generateRouter(userRouters) {
             routes = {
                 path: r.path,
                 name: r.name,
+                component: Layout,
                 meta: { title: r.title, icon: 'dashboard' }
             }
             routes.children = generateRouter(r.children)

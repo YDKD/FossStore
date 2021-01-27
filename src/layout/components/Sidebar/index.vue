@@ -32,7 +32,7 @@ export default {
     }
   },
   created(){
-    console.log(this.$store.state.user.userRouterList)
+    console.log(JSON.parse(this.$store.state.user.userRouterList))
     if(Array.isArray(this.$store.state.user.userRouterList)) {
       this.newRoutes = this.$store.state.user.userRouterList
     } else {
