@@ -28,7 +28,6 @@ router.beforeEach(async (to, from, next) => {
       let newRoutes = Array.isArray(sessionStorage.getItem('userRouterList')) ? sessionStorage.getItem('userRouterList') : JSON.parse(sessionStorage.getItem('userRouterList'))
       // resetRouter()
       router.addRoutes(newRoutes)
-      // location.reload()
       next({ ...to, replace: true })
     } else {
       next()
