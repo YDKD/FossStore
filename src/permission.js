@@ -6,7 +6,7 @@
  * @Description: In User Settings Edit
  * @FilePath: \FossStore\src\permission.js
  */
-import router from './router'
+import router, { resetRouter } from '@/router/index'
 import store from './store'
 import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
@@ -14,6 +14,7 @@ import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 import Cookies from 'js-cookie'
+import { generateRouter } from './utils/generate-router'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -22,7 +23,14 @@ const whiteList = ['/login', '/404', '/index', '/', '/register', '/password-rese
 
 router.beforeEach(async (to, from, next) => {
   if (Cookies.get('UserToken') || whiteList.indexOf(to.path) != -1) {
-    next()
+    if (!store.state.user.hasAuth && sessionStorage.getItem('userInfo')) {
+      await store.dispatch('user/getUserRouterList')
+      let newRoutes = Array.isArray(sessionStorage.getItem('userRouterList')) ? sessionStorage.getItem('userRouterList') : JSON.parse(sessionStorage.getItem('userRouterList'))
+      router.addRoutes(newRoutes)
+      next()
+    } else {
+      next()
+    }
   }
   else {
     next({ path: '/login' })

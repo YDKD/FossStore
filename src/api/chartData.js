@@ -14,3 +14,10 @@ export function validatorEmailExist(email) { // 验证邮箱是否被注册
     method: 'get',
   })
 }
+
+export function getUserRourterListById(name) { // 根据用户名获取用户列表
+  return request({
+    url: `/auth/user_router_list/${name}`,
+    method: 'get',
+  })
+}

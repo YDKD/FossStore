@@ -18,7 +18,7 @@ import { mapGetters } from "vuex";
 export default {
   name: "Dashboard",
   created() {
-    console.log(this.$store.state.user.userInfo);
+    // console.log(this.$store.state.user.userInfo);
   },
   computed: {
     ...mapGetters(["name"]),

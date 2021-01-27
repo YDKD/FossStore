@@ -11,12 +11,17 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 import { decrypt } from '@/utils/crypt'
 import { Message } from 'element-ui'
+import { formatRouterTree, generateRouter } from '@/utils/generate-router'
+import router from '@/router/index'
+import { getUserRourterListById } from '@/api/chartData'
 const getDefaultState = () => {
   return {
     name: '',
+    hasAuth: false,
     avatar: '',
     exp: sessionStorage.getItem(`exp`) || 0,
-    userInfo: JSON.parse(sessionStorage.getItem('userInfo')) || ''
+    userInfo: JSON.parse(sessionStorage.getItem('userInfo')) || '',
+    userRouterList: JSON.parse(sessionStorage.getItem('userRouterList')) || []
   }
 }
 
@@ -29,6 +34,9 @@ const mutations = {
   SET_NAME: (state, name) => {
     state.name = name
   },
+  HAS_AUTH: (state, hasAuth) => {
+    state.hasAuth = hasAuth
+  },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   },
@@ -39,6 +47,10 @@ const mutations = {
   USER_INFO: (state, userInfo) => {
     sessionStorage.setItem(`userInfo`, JSON.stringify(userInfo))
     state.userInfo = userInfo
+  },
+  USER_ROUTER_LIST: (state, userRouterList) => {
+    sessionStorage.setItem('userRouterList', userRouterList)
+    state.userRouterList = userRouterList
   }
 }
 
@@ -52,8 +64,7 @@ const actions = {
         if (data.code == 50008 || data.code == 50009) {
           return reject(Message.error(data.msg))
         } else {
-          let { access_token, userInfo, routerList } = decrypt(data.access_token)
-          console.log(routerList)
+          let { access_token, userInfo } = decrypt(data.access_token)
           commit('EXP_TIME', data.exp)
           commit('USER_INFO', userInfo)
           setToken(access_token)
@@ -86,13 +97,29 @@ const actions = {
     })
   },
 
+  getUserRouterList({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      getUserRourterListById(state.userInfo.username).then(response => {
+        let { data } = response
+        const paylod = formatRouterTree(data),
+          new_routes = generateRouter(paylod)
+        router.options.routes = [...router.options.routes, ...new_routes]
+        router.addRoutes(new_routes)
+        commit('HAS_AUTH', true)
+        commit('USER_ROUTER_LIST', JSON.stringify(router.options.routes))
+        resolve()
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  },
+
   // user logout
   logout({ commit, state }) {
-    console.log(state.userInfo)
     return new Promise((resolve, reject) => {
       logout(state.userInfo.username).then(() => {
         removeToken() // must remove  token  first
-        resetRouter()
+        // resetRouter()
         commit('RESET_STATE')
         resolve()
       }).catch(error => {
