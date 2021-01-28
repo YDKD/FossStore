@@ -25,9 +25,6 @@ router.beforeEach(async (to, from, next) => {
   if (Cookies.get('UserToken') || whiteList.indexOf(to.path) != -1) {
     if (!store.state.user.hasAuth && sessionStorage.getItem('userInfo')) {
       await store.dispatch('user/getUserRouterList')
-      let newRoutes = Array.isArray(sessionStorage.getItem('userRouterList')) ? sessionStorage.getItem('userRouterList') : JSON.parse(sessionStorage.getItem('userRouterList'))
-      // resetRouter()
-      router.addRoutes(newRoutes)
       next({ ...to, replace: true })
     } else {
       next()

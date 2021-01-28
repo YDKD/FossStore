@@ -38,7 +38,7 @@ function generateRouter(userRouters) {
             routes = {
                 path: r.path,
                 name: r.name,
-                component: (resolve) => require([`@/views/${r.name}/index`], resolve),
+                component: (resolve) => require([`@/views/${r.name}/index`], resolve).default,
                 meta: { title: r.title, icon: 'dashboard' }
             }
         }

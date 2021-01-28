@@ -1,12 +1,12 @@
 <template>
   <div>
-      卖家分析
+      卖家城市分析
   </div>
 </template>
 
 <script>
 export default {
-name: 'seller-analysis'
+name: 'seller-city-analysis'
 
 }
 
