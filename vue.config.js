@@ -50,6 +50,10 @@ module.exports = {
         target: url1,
         pathRewrite: { "^/user": "/user" }
       },
+      "/goods": {
+        target: url1,
+        pathRewrite: { "^/goods": "/goods" }
+      },
     }
   },
   configureWebpack: {

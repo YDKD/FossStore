@@ -109,7 +109,7 @@ export default {
       file: "",
       loginForm: {
         username: "ydkd",
-        password: "123",
+        password: "123456",
       },
       loginRules: {
         username: [

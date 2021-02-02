@@ -17,7 +17,9 @@ import { getUserRourterListById } from '@/api/chartData'
 const getDefaultState = () => {
   return {
     name: '',
+    token: '',
     hasAuth: false,
+    user_place: '',
     avatar: '',
     exp: sessionStorage.getItem(`exp`) || 0,
     userInfo: JSON.parse(sessionStorage.getItem('userInfo')) || '',
@@ -51,6 +53,9 @@ const mutations = {
   USER_ROUTER_LIST: (state, userRouterList) => {
     sessionStorage.setItem('userRouterList', userRouterList)
     state.userRouterList = userRouterList
+  },
+  USER_PLACE: (state, user_place) => {
+    state.user_place = user_place
   }
 }
 

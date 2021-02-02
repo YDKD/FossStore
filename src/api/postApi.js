@@ -57,3 +57,11 @@ export function uploadFile(data) { // 上传
         data
     })
 }
+
+export function exportData(data) { // 导出数据
+    return request({
+        url: '/goods/export_hot',
+        method: 'post',
+        data
+    })
+}

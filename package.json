@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "axios": "0.18.1",
+    "blob": "^0.1.0",
     "core-js": "3.6.5",
     "cross-env": "^7.0.3",
     "element-ui": "2.13.2",
@@ -38,6 +39,7 @@
     "babel-eslint": "10.1.0",
     "babel-jest": "23.6.0",
     "babel-plugin-dynamic-import-node": "2.3.3",
+    "blob": "^0.1.0",
     "chalk": "2.4.2",
     "connect": "3.6.6",
     "cross-env": "^7.0.3",
