@@ -271,8 +271,8 @@ export default {
       this.totalNum = 0;
       this.loading = true;
       let params = {
-        // user_place: this.$store.state.user.user_place,
-        user_place: "深圳市",
+        user_place: this.$store.state.user.user_place,
+        // user_place: "深圳市",
       };
       getShortestData(params).then((res) => {
         this.loading = false;
