@@ -50,6 +50,7 @@ import Breadcrumb from "@/components/Breadcrumb";
 import Hamburger from "@/components/Hamburger";
 import axios from "axios";
 import { getUserLoginPlace } from "@/api/chartData";
+import { jsonp } from "vue-jsonp";
 export default {
   components: {
     Breadcrumb,
@@ -65,23 +66,35 @@ export default {
   },
   created() {
     axios.get("https://api.ipify.org/").then((res) => {
-      axios
-        .get("https://restapi.amap.com/v3/ip", {
-          params: {
-            key: "257ece5abf371510c69e13639b9dc480",
-            ip: res.data,
-          },
-        })
-        .then((resp) => {
-          this.location_place = resp.data.province + "、" + resp.data.city;
-          let params = {
-            user_id: this.$store.getters.userInfo.user_id,
-            user_place: this.location_place
-          };
-          getUserLoginPlace(params).then((res) => {
-            this.$store.commit("user/USER_PLACE", resp.data.city);
-          });
+      jsonp(
+        "https://apis.map.qq.com/ws/location/v1/ip",
+        {
+          key: "LXLBZ-IR3W2-EF5UY-CFJ6O-2TF2Q-7OBC5",
+          ip: res.data,
+          output: "jsonp",
+        },
+        60000
+      ).then((resp) => {
+        console.log(resp)
+        let res_data = resp.result.ad_info
+        this.location_place =res_data.nation+ '、'+ res_data.province + "、" + res_data.city + '、' + res_data.district
+        let params = {
+          user_id: this.$store.getters.userInfo.user_id,
+          user_place: this.location_place,
+          location: resp.result.location.lat + ',' + resp.result.location.lng
+        };
+        getUserLoginPlace(params).then((res) => {
+          this.$store.commit("user/USER_PLACE", res_data.city);
         });
+      });
+      // axios.get("https://restapi.amap.com/v3/ip", {
+      //     params: {
+      //       key: "257ece5abf371510c69e13639b9dc480",
+      //       ip: res.data,
+      //     },
+      //   }).then((resp) => {
+      //
+      //   });
     });
   },
   methods: {
