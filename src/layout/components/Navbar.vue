@@ -64,12 +64,24 @@ export default {
     };
   },
   created() {
-    let params = {
-      user_id: this.$store.getters.userInfo.user_id
-    }
-    getUserLoginPlace(params).then((res) => {
-      this.$store.commit('user/USER_PLACE', res.data.city)
-      this.location_place = res.data.province + "、" + res.data.city;
+    axios.get("https://api.ipify.org/").then((res) => {
+      axios
+        .get("https://restapi.amap.com/v3/ip", {
+          params: {
+            key: "257ece5abf371510c69e13639b9dc480",
+            ip: res.data,
+          },
+        })
+        .then((resp) => {
+          this.location_place = resp.data.province + "、" + resp.data.city;
+          let params = {
+            user_id: this.$store.getters.userInfo.user_id,
+            user_place: this.location_place
+          };
+          getUserLoginPlace(params).then((res) => {
+            this.$store.commit("user/USER_PLACE", resp.data.city);
+          });
+        });
     });
   },
   methods: {
