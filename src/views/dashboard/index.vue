@@ -8,22 +8,34 @@
 -->
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: 123123</div>
+    <iframe v-if="url" :src="url" frameborder="0" width="100%" :style="{ height: calHeight }" scrolling="auto"></iframe>
+    <div v-else class="cloack">地图加载中...</div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-
+import { mapGetters } from "vuex"
+import { getUserMap } from "@/api/chartData"
 export default {
   name: "Dashboard",
+  data() {
+    return {
+      url: "",
+    }
+  },
   created() {
+    getUserMap().then((res) => {
+      this.url = res.data
+    })
     // console.log(this.$store.state.user.userInfo);
   },
   computed: {
     ...mapGetters(["name"]),
+    calHeight() {
+      return window.innerHeight - 100 + "px"
+    },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -35,5 +47,11 @@ export default {
     font-size: 30px;
     line-height: 46px;
   }
+}
+.cloack {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>

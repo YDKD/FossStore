@@ -48,3 +48,10 @@ export function getUserLoginPlace(params) { // 获取用户的登录地址
   })
 }
 
+export function getUserMap(params) { // 获取用户地图
+  return request({
+    url: '/auth/map',
+    method: 'get',
+    params
+  })
+}

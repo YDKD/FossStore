@@ -8,30 +8,19 @@
             <svg-icon icon-class="icon-wenhao" class="func-svg"></svg-icon>
           </div>
           <div class="right">
-            <el-tooltip
-              content="收货时效会默认筛选出离当前用户最近的店铺"
-              placement="top"
-              effect="light"
-            >
-              <!-- content to trigger tooltip here -->
-              <el-button type="primary" size="mini" @click="receiveGoodsTime"
-                >收货时效</el-button
-              >
+            <el-tooltip content="收货时效会默认筛选出离当前用户最近的店铺" placement="top" effect="light">
+              <el-button type="primary" size="mini" @click="receiveGoodsTime">收货时效</el-button>
+            </el-tooltip>
+            <el-tooltip content="清除当前收获时效筛选条件" placement="top" effect="light">
+              <el-button type="success" icon="el-icon-refresh"  size="mini" @click="refreshData"></el-button>
             </el-tooltip>
 
-            <el-button type="success" size="mini" @click="exportHotData"
-              >导出数据</el-button
-            >
+            <el-button type="success" size="mini" @click="exportHotData">导出数据</el-button>
           </div>
         </div>
       </div>
       <!-- card body -->
-      <el-table
-        :data="listData"
-        border
-        stripe
-        :default-sort="{ prop: 'views_price', order: 'descending' }"
-      >
+      <el-table :data="listData" border stripe :default-sort="{ prop: 'views_price', order: 'descending' }">
         <el-table-column type="expand">
           <template slot-scope="scope">
             <el-form label-position="left">
@@ -49,11 +38,7 @@
         <el-table-column label="店铺名称" prop="shop_name"></el-table-column>
         <el-table-column label="宝贝名称">
           <template slot-scope="scope">
-            <span>{{
-              scope.row.views_title.length > 10
-                ? scope.row.views_title.slice(0, 10) + "..."
-                : scope.row.views_title
-            }}</span>
+            <span>{{ scope.row.views_title.length > 10 ? scope.row.views_title.slice(0, 10) + "..." : scope.row.views_title }}</span>
           </template>
         </el-table-column>
         <el-table-column label="宝贝价格" :sortable="true" :sort-by="priceSort">
@@ -73,11 +58,7 @@
             {{ scope.row.views_sales + " (人)" }}
           </template>
         </el-table-column>
-        <el-table-column
-          label="评论人数"
-          :sortable="true"
-          :sort-by="commitSort"
-        >
+        <el-table-column label="评论人数" :sortable="true" :sort-by="commitSort">
           <template slot-scope="scope">
             {{ scope.row.comment_count + " (人)" }}
           </template>
@@ -95,19 +76,11 @@
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
-                  <span @click="showDetail(scope.row, 'goods')"
-                    >查看商品详情</span
-                  >
+                  <span @click="showDetail(scope.row, 'goods')">查看商品详情</span>
                 </el-dropdown-item>
+                <el-dropdown-item> <span @click="showDetail(scope.row, 'commit')">查看评论详情</span></el-dropdown-item>
                 <el-dropdown-item>
-                  <span @click="showDetail(scope.row, 'commit')"
-                    >查看评论详情</span
-                  ></el-dropdown-item
-                >
-                <el-dropdown-item>
-                  <span @click="showDetail(scope.row, 'shop')"
-                    >查看店铺详情</span
-                  >
+                  <span @click="showDetail(scope.row, 'shop')">查看店铺详情</span>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -117,25 +90,17 @@
 
       <!-- 分页 -->
       <div class="paging">
-        <el-pagination
-          @current-change="currentChange"
-          :current-page.sync="currentPage"
-          :page-size="pageSize"
-          :total="totalNum"
-          background
-          layout="prev, pager, next"
-        >
-        </el-pagination>
+        <el-pagination @current-change="currentChange" :current-page.sync="currentPage" :page-size="pageSize" :total="totalNum" background layout="prev, pager, next"> </el-pagination>
       </div>
     </el-card>
   </div>
 </template>
 
 <script>
-import { rTime } from "@/utils/index";
-import { getHotInphoneData, getShortestData } from "@/api/chartData";
-import { exportData } from "@/api/postApi";
-import blob from "blob";
+import { rTime } from "@/utils/index"
+import { getHotInphoneData, getShortestData } from "@/api/chartData"
+import { exportData } from "@/api/postApi"
+import blob from "blob"
 export default {
   name: "hot-goods",
   data() {
@@ -147,10 +112,10 @@ export default {
       totalNum: 0,
       isShortest: false,
       shortestData: [],
-    };
+    }
   },
   created() {
-    this.getData();
+    this.getData()
   },
   methods: {
     // 导出数据
@@ -164,126 +129,127 @@ export default {
           let para = {
             data: this.listData,
             check: 0,
-          };
+          }
           exportData(para).then((res) => {
-            let execlName = "test";
+            let execlName = "test"
             const buf = Buffer.from(res.data),
               blob = new Blob([buf], {
-                type:
-                  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8",
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8",
               }),
               downloadElement = document.createElement("a"),
-              href = window.URL.createObjectURL(blob); // 创建下载的链接
-            downloadElement.href = href;
-            downloadElement.download = `${execlName}.xlsx`; // 下载后文件名
-            document.body.appendChild(downloadElement);
-            downloadElement.click(); // 点击下载
-            window.URL.revokeObjectURL(href);
+              href = window.URL.createObjectURL(blob) // 创建下载的链接
+            downloadElement.href = href
+            downloadElement.download = `${execlName}.xlsx` // 下载后文件名
+            document.body.appendChild(downloadElement)
+            downloadElement.click() // 点击下载
+            window.URL.revokeObjectURL(href)
             // console.log(res);
-          });
+          })
         })
         .catch(() => {
           let para = {
             data: this.listData,
-            check: 1
-          };
+            check: 1,
+          }
           exportData(para).then((res) => {
-            let execlName = "test";
+            let execlName = "test"
             const buf = Buffer.from(res.data),
               blob = new Blob([buf], {
-                type:
-                  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8",
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8",
               }),
               downloadElement = document.createElement("a"),
-              href = window.URL.createObjectURL(blob); // 创建下载的链接
-            downloadElement.href = href;
-            downloadElement.download = `${execlName}.xlsx`; // 下载后文件名
-            document.body.appendChild(downloadElement);
-            downloadElement.click(); // 点击下载
-            window.URL.revokeObjectURL(href);
+              href = window.URL.createObjectURL(blob) // 创建下载的链接
+            downloadElement.href = href
+            downloadElement.download = `${execlName}.xlsx` // 下载后文件名
+            document.body.appendChild(downloadElement)
+            downloadElement.click() // 点击下载
+            window.URL.revokeObjectURL(href)
             // console.log(res);
-          });
-        });
+          })
+        })
     },
     // 价格排序
     priceSort(row) {
-      return row.views_price;
+      return row.views_price
     },
     // 运费排序
     freeSort(row) {
-      return row.view_fee;
+      return row.view_fee
     },
     // 购买人数排序
     salesSort(row) {
-      return parseInt(row.views_sales);
+      return parseInt(row.views_sales)
     },
     // 评论人数排序
     commitSort(row) {
-      return parseInt(row.comment_count);
+      return parseInt(row.comment_count)
     },
     // 数据库返回时间格式化
     formatTime(time) {
-      return rTime(time);
+      return rTime(time)
     },
     // 获取数据
     getData() {
-      this.loading = true;
+      this.loading = true
       let para = {
         currentPage: this.currentPage,
         pageSize: this.pageSize,
-      };
+      }
       getHotInphoneData(para).then((res) => {
-        this.loading = false;
-        this.listData = res.data.result;
-        this.totalNum = res.data.total;
-      });
+        this.loading = false
+        this.listData = res.data.result
+        this.totalNum = res.data.total
+      })
     },
     // 查看商品详情
     showDetail(row, currentClick) {
-      let url = "";
+      let url = ""
       if (currentClick == "goods") {
-        url = row.detail_url;
+        url = row.detail_url
       } else if (currentClick == "commit") {
-        url = row.comment_url;
+        url = row.comment_url
       } else if (currentClick == "shop") {
-        url = row.shop_link;
+        url = row.shop_link
       }
 
       if (url != "") {
-        window.location.href = url;
+        window.location.href = url
       }
     },
     // 分页切换
     currentChange() {
       if (!this.isShortest) {
-        this.getData();
+        this.getData()
       } else {
-        this.listData = this.shortestData.slice(
-          (this.currentPage - 1) * this.pageSize,
-          this.pageSize * 2
-        );
+        this.listData = this.shortestData.slice((this.currentPage - 1) * this.pageSize, this.pageSize * 2)
       }
     },
     // 收货时效
     receiveGoodsTime() {
-      this.currentPage = 1;
-      this.listData = [];
-      this.totalNum = 0;
-      this.loading = true;
+      this.currentPage = 1
+      this.listData = []
+      this.totalNum = 0
+      this.loading = true
       let params = {
-        user_place: this.$store.state.user.user_place,
+        user_place: this.$store.state.user.user_place || '成都市',
         // user_place: "深圳市",
-      };
+      }
       getShortestData(params).then((res) => {
-        this.loading = false;
-        this.totalNum = res.data.length;
-        this.isShortest = true;
-        this.shortestData = res.data;
-        this.listData = this.shortestData.slice(0, 10);
-      });
+        this.loading = false
+        this.totalNum = res.data.length
+        this.isShortest = true
+        this.shortestData = res.data
+        this.listData = this.shortestData.slice(0, 10)
+      })
     },
+    // 清除筛选条件
+    refreshData(){
+      this.isShortest = false
+      this.currentPage = 1
+      this.getData()
+    }
   },
-};
+}
 </script>
 <style lang='scss' scoped>
 .hot-goods {
@@ -315,4 +281,5 @@ export default {
     margin-top: 10px;
   }
 }
+
 </style>

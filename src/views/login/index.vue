@@ -165,7 +165,20 @@ export default {
           this.$store
             .dispatch("user/loginUsername", this.loginForm)
             .then(() => {
-              this.$router.push({ path: "/dashboard/dashboard" });
+              let userInfo = this.$store.state.user
+              console.log(userInfo)
+              if(userInfo.choose_type) {
+                console.log(111)
+                this.$router.push({ path: "/dashboard/dashboard" });
+              } else {
+                this.$message({
+                  message: '您好，系统检测当前您未选择筛选类型，已为你自动跳转到配置页!',
+                  duration: 3000
+                })
+                console.log(123)
+                this.$router.push({path: '/monitor'})
+              }
+              
               this.loading = false;
               // console.log(this.$store.state.user.userInfo);
             })

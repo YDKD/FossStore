@@ -18,7 +18,7 @@ import { generateRouter } from './utils/generate-router'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login', '/404', '/index', '/', '/register', '/password-reset'] // no redirect whitelist
+const whiteList = ['/login', '/404', '/index', '/', '/register', '/dashboard/dashboard', '/monitor', '/password-reset'] // no redirect whitelist
 
 
 router.beforeEach(async (to, from, next) => {
