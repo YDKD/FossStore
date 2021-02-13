@@ -6,7 +6,7 @@
  * @Description: In User Settings Edit
  * @FilePath: \FossStore\src\utils\crypt.js
  */
-import JSEncrypt from 'jsencrypt'
+import JSEncrypt from 'jsencrypt/bin/jsencrypt'
 
 function encryption(data) {
   // 加密信息

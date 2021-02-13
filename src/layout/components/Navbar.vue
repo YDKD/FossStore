@@ -75,7 +75,6 @@ export default {
         },
         60000
       ).then((resp) => {
-        console.log(resp)
         let res_data = resp.result.ad_info
         this.location_place =res_data.nation+ '、'+ res_data.province + "、" + res_data.city + '、' + res_data.district
         let params = {

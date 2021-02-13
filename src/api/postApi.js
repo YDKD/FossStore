@@ -65,3 +65,20 @@ export function exportData(data) { // 导出数据
         data
     })
 }
+
+export function saveConfigCategoryData(data) { // 导出数据
+    return request({
+        url: '/system/category',
+        method: 'post',
+        data
+    })
+}
+
+
+export function sendUserConfigureData(data) { // 发送用户要爬取的数据
+    return request({
+        url: '/system/configure/custom',
+        method: 'post',
+        data
+    })
+}

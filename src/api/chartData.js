@@ -55,3 +55,12 @@ export function getUserMap(params) { // 获取用户地图
     params
   })
 }
+
+
+export function getSystemCategoryData(params) { // 获取系统已有分类数据
+  return request({
+    url: '/system/category',
+    method: 'get',
+    params
+  })
+}

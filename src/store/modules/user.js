@@ -21,6 +21,7 @@ const getDefaultState = () => {
     hasAuth: false,
     user_place: '',
     avatar: '',
+    text: '',
     exp: sessionStorage.getItem(`exp`) || 0,
     userInfo: JSON.parse(sessionStorage.getItem('userInfo')) || '',
     userRouterList: JSON.parse(sessionStorage.getItem('userRouterList')) || []
@@ -30,6 +31,9 @@ const getDefaultState = () => {
 const state = getDefaultState()
 
 const mutations = {
+  TEXT: (state, text) => {
+    state.text = text
+  },
   RESET_STATE: (state) => {
     Object.assign(state, getDefaultState())
   },

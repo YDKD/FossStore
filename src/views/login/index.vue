@@ -1,12 +1,6 @@
 <template>
   <div class="login-container">
-    <el-form
-      ref="loginForm"
-      :model="loginForm"
-      :rules="loginRules"
-      class="login-form"
-      label-position="left"
-    >
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" label-position="left">
       <div class="title-container">
         <h3 class="title">登 录</h3>
       </div>
@@ -15,23 +9,12 @@
         <span class="svg-icon">
           <svg-icon icon-class="icon-yonghuming" class="func-svg" />
         </span>
-        <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="请输入用户名"
-          name="username"
-          type="text"
-          tabindex="1"
-          auto-complete="off"
-        />
+        <el-input ref="username" v-model="loginForm.username" placeholder="请输入用户名" name="username" type="text" tabindex="1" auto-complete="off" />
       </el-form-item>
 
       <el-form-item prop="password">
         <span class="svg-icon">
-          <svg-icon
-            icon-class="icon-tubiaozhizuomobanyihuifu-"
-            class="func-svg"
-          />
+          <svg-icon icon-class="icon-tubiaozhizuomobanyihuifu-" class="func-svg" />
         </span>
         <el-input
           :key="passwordType"
@@ -46,18 +29,10 @@
         />
       </el-form-item>
 
-      <el-button
-        :loading="loading"
-        type="primary"
-        style="width: 100%; margin-bottom: 30px"
-        @click.native.prevent="handleLogin"
-        >Login</el-button
-      >
+      <el-button :loading="loading" type="primary" style="width: 100%; margin-bottom: 30px" @click.native.prevent="handleLogin">Login</el-button>
 
       <div class="tips">
-        <span style="margin-right: 20px" @click="jumpResetPassword"
-          >忘记密码？</span
-        >
+        <span style="margin-right: 20px" @click="jumpResetPassword">忘记密码？</span>
         <span @click="jumpRegister">点击注册</span>
       </div>
     </el-form>
@@ -84,26 +59,26 @@
 </template>
 
 <script>
-import { validUsername } from "@/utils/validate";
-import { login, encrypt, uploadFile } from "@/api/postApi";
-import { decrypt, encryption } from "@/utils/crypt";
+import { validUsername } from "@/utils/validate"
+import { login, encrypt, uploadFile } from "@/api/postApi"
+import { decrypt, encryption } from "@/utils/crypt"
 export default {
   name: "Login",
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!value) {
-        callback(new Error("请输入用户名"));
+        callback(new Error("请输入用户名"))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     const validatePassword = (rule, value, callback) => {
       if (!value) {
-        callback(new Error("请输入密码"));
+        callback(new Error("请输入密码"))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     return {
       uploadName: "",
       file: "",
@@ -112,33 +87,27 @@ export default {
         password: "123456",
       },
       loginRules: {
-        username: [
-          { required: true, trigger: "blur", validator: validateUsername },
-        ],
-        password: [
-          { required: true, trigger: "blur", validator: validatePassword },
-        ],
+        username: [{ required: true, trigger: "blur", validator: validateUsername }],
+        password: [{ required: true, trigger: "blur", validator: validatePassword }],
       },
       loading: false,
       passwordType: "password",
-    };
+    }
   },
   watch: {},
   methods: {
     // 上传文件
     beforeUpload(file) {
       // 后缀
-      let testmsg = file.target.files[0].name.slice(
-        file.target.files[0].name.lastIndexOf(".") + 1
-      );
+      let testmsg = file.target.files[0].name.slice(file.target.files[0].name.lastIndexOf(".") + 1)
       // 文件信息
-      this.uploadName = file.target.files[0].name;
-      this.file = file.target.files[0];
+      this.uploadName = file.target.files[0].name
+      this.file = file.target.files[0]
       let data = new FormData()
-      data.append('file', this.file)
+      data.append("file", this.file)
       uploadFile(data).then((res) => {
-        console.log(res);
-      });
+        console.log(res)
+      })
     },
     // 解密
     decrypt() {
@@ -152,47 +121,34 @@ export default {
       // })
     },
     jumpRegister() {
-      this.$router.push({ path: "/register" });
+      this.$router.push({ path: "/register" })
     },
     jumpResetPassword() {
-      this.$router.push({ path: "/password-reset" });
+      this.$router.push({ path: "/password-reset" })
     },
     handleLogin() {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          this.loading = true;
+          this.loading = true
           // this.$router.push({ path: "/404" });
           this.$store
             .dispatch("user/loginUsername", this.loginForm)
             .then(() => {
-              let userInfo = this.$store.state.user
-              console.log(userInfo)
-              if(userInfo.choose_type) {
-                console.log(111)
-                this.$router.push({ path: "/dashboard/dashboard" });
-              } else {
-                this.$message({
-                  message: '您好，系统检测当前您未选择筛选类型，已为你自动跳转到配置页!',
-                  duration: 3000
-                })
-                console.log(123)
-                this.$router.push({path: '/monitor'})
-              }
-              
-              this.loading = false;
+              this.$router.push({ path: "/dashboard/dashboard" })
+              this.loading = false
               // console.log(this.$store.state.user.userInfo);
             })
             .catch(() => {
-              this.loading = false;
-            });
+              this.loading = false
+            })
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log("error submit!!")
+          return false
         }
-      });
+      })
     },
   },
-};
+}
 </script>
 
 <style lang="scss">
