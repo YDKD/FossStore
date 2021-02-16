@@ -26,6 +26,14 @@ export function createUser(data) { // 创建用户
 }
 
 
+export function forgetPassword(data) { // 忘记密码
+    return request({
+        url: '/user/forget-password',
+        method: 'post',
+        data
+    })
+}
+
 export function resetPassword(data) { // 重置密码
     return request({
         url: '/user/reset-password',
@@ -78,6 +86,30 @@ export function saveConfigCategoryData(data) { // 导出数据
 export function sendUserConfigureData(data) { // 发送用户要爬取的数据
     return request({
         url: '/system/configure/custom',
+        method: 'post',
+        data
+    })
+}
+
+export function resetUsername(data) { // 重置用户名
+    return request({
+        url: '/user/reset-username',
+        method: 'post',
+        data
+    })
+}
+
+export function validateEmail(data) { // 验证原来邮箱
+    return request({
+        url: '/user/validate/email',
+        method: 'post',
+        data
+    })
+}
+
+export function resetEmail(data) { // 重置邮箱
+    return request({
+        url: '/user/reset-email',
         method: 'post',
         data
     })

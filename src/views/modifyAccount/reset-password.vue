@@ -1,11 +1,3 @@
-<!--
- * @Author: your name
- * @Date: 2021-01-09 14:28:38
- * @LastEditTime: 2021-01-09 16:05:13
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \FossStore\src\views\modifyAccount\reset-password.vue
--->
 
 <template>
   <div class="register-container">
@@ -67,7 +59,7 @@
 
 <script>
 import { validatorUsernameExist, validatorEmailExist } from "@/api/chartData";
-import { senEmailCode, resetPassword } from "@/api/postApi";
+import { senEmailCode, forgetPassword } from "@/api/postApi";
 import { encryption, decrypt } from "@/utils/crypt";
 export default {
   name: "reset-password",
@@ -187,7 +179,7 @@ export default {
           let para = {
             data: encryption(params),
           };
-          resetPassword(para).then((res) => {
+          forgetPassword(para).then((res) => {
             if (res.data.status === 202) {
               // 邮箱验证码不正确
               this.$message.error(res.data.msg);

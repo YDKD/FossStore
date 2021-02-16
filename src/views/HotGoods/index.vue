@@ -98,7 +98,7 @@
 
 <script>
 import { rTime } from "@/utils/index"
-import { getHotInphoneData, getShortestData } from "@/api/chartData"
+import { getHotData, getShortestData } from "@/api/chartData"
 import { exportData } from "@/api/postApi"
 import blob from "blob"
 export default {
@@ -112,9 +112,11 @@ export default {
       totalNum: 0,
       isShortest: false,
       shortestData: [],
+      user: ''
     }
   },
   created() {
+    this.user = this.$store.state.user.userInfo
     this.getData()
   },
   methods: {
@@ -192,10 +194,11 @@ export default {
     getData() {
       this.loading = true
       let para = {
+        user_id: this.user.user_id,
         currentPage: this.currentPage,
         pageSize: this.pageSize,
       }
-      getHotInphoneData(para).then((res) => {
+      getHotData(para).then((res) => {
         this.loading = false
         this.listData = res.data.result
         this.totalNum = res.data.total
@@ -213,7 +216,7 @@ export default {
       }
 
       if (url != "") {
-        window.location.href = url
+        window.open(url)
       }
     },
     // 分页切换

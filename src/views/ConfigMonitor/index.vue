@@ -84,7 +84,7 @@ export default {
         userCheck: "",
       },
       confirmRules: {
-        userCheck: [{ validator: validatorUserCheck, trigger: "blur" }],
+        userCheck: [{ required: true, validator: validatorUserCheck, trigger: "blur" }],
       },
     }
   },
@@ -178,12 +178,12 @@ export default {
     confirmResolve() {
       let para = {
         data: this.confrmForm.userCheck,
-        user_id: this.user.user_id
+        user_id: this.user.user_id,
       }
-      sendUserConfigureData(para).then(res=> {
-        if(res.data == 200) {
+      sendUserConfigureData(para).then((res) => {
+        if (res.data == 200) {
           this.dialogVisible = false
-          this.$message.success('已将您的信息发送至系统，待数据同步后会以邮件的形式告知您')
+          this.$message.success("已将您的信息发送至系统，待数据同步后会以邮件的形式告知您")
           this.$refs.configForm.resetFields()
         }
       })

@@ -23,7 +23,7 @@ export function getUserRourterListById(name) { // 根据用户名获取用户列
 }
 
 
-export function getHotInphoneData(params) { // 根据用户名获取用户列表
+export function getHotData(params) { // 获取用户的热销数据
   return request({
     url: `/goods/hot_iphone`,
     method: 'get',
