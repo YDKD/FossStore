@@ -58,6 +58,10 @@ module.exports = {
         target: url1,
         pathRewrite: { "^/system": "/system" }
       },
+      "/shop": {
+        target: url1,
+        pathRewrite: { "^/shop": "/shop" }
+      },
     }
   },
   configureWebpack: {
@@ -69,7 +73,6 @@ module.exports = {
         '@': resolve('src')
       }
     },
-    devtool: 'source-map',
   },
   chainWebpack(config) {
     // it can improve the speed of the first screen, it is recommended to turn on preload

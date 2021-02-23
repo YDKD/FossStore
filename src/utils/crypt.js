@@ -1,12 +1,4 @@
-/*
- * @Author: your name
- * @Date: 2021-01-08 16:51:22
- * @LastEditTime: 2021-01-11 14:15:53
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \FossStore\src\utils\crypt.js
- */
-import JSEncrypt from 'jsencrypt/bin/jsencrypt'
+import JSEncrypt from 'jsencrypt'
 
 function encryption(data) {
   // 加密信息

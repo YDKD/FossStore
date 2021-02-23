@@ -64,3 +64,11 @@ export function getSystemCategoryData(params) { // 获取系统已有分类数�
     params
   })
 }
+
+export function getShopData(params) { // 获取店铺数据
+  return request({
+    url: '/shop/user_data',
+    method: 'get',
+    params
+  })
+}

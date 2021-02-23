@@ -114,3 +114,11 @@ export function resetEmail(data) { // 重置邮箱
         data
     })
 }
+
+export function screenShopData(data) { // 筛选店铺评分数据
+    return request({
+        url: '/shop/screen_data',
+        method: 'post',
+        data
+    })
+}
