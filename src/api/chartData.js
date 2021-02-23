@@ -72,3 +72,10 @@ export function getShopData(params) { // 获取店铺数据
     params
   })
 }
+
+export function getSellerProvinceData(user_id) { // 获取卖家管理中的省份数据
+  return request({
+    url: `/seller/province/${user_id}`,
+    method: 'get',
+  })
+}
