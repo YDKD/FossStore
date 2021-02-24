@@ -79,3 +79,11 @@ export function getSellerProvinceData(user_id) { // 获取卖家管理中的省�
     method: 'get',
   })
 }
+
+
+export function getSellerCityData(user_id) { // 获取卖家管理中的城市数据
+  return request({
+    url: `/seller/city/${user_id}`,
+    method: 'get',
+  })
+}

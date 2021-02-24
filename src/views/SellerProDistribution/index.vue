@@ -145,7 +145,6 @@ export default {
           }
           this.options1.series[0].data.push(tp)
         })
-        console.log(this.total_sell_count)
       })
     },
     filterData(data1, data2) {
@@ -226,7 +225,7 @@ export default {
 }
 @media screen and (max-height: 1600px) {
   .mychart {
-    width: 600px;
+    min-width: 650px;
     height: 500px;
   }
   .mychart1 {
