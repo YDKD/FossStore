@@ -11,14 +11,14 @@
         <el-col :span="12" :offset="0">
           <div id="myChart" class="mychart"></div>
         </el-col>
-        <el-col :span="12" :offset="0">
-          <span>卖家城市交易总人数</span>
+        <el-col :span="12" :push="3">
+          <span>卖家省份交易总人数</span>
           <div id="myChart1" class="mychart1"></div>
         </el-col>
       </el-row>
       <div class="content">
         <el-table :data="total_sell_count" border stripe>
-          <el-table-column label="城市" prop="city"></el-table-column>
+          <el-table-column label="省份" prop="province"></el-table-column>
           <el-table-column label="购买人数" prop="count_sales"></el-table-column>
           <el-table-column label="交易额">
             <template slot-scope="scope">
@@ -32,14 +32,14 @@
 </template>
 
 <script>
-import { getSellerCityData } from "@/api/chartData"
+import { getSellerProvinceData } from "@/api/chartData"
 export default {
-  name: "seller-city-analysis",
+  name: "seller-pro-distribution",
   data() {
     return {
       user: "",
       amoutData: "",
-      cityData: "",
+      provinceData: "",
       total_sell_count: [],
       options: {
         tooltip: {
@@ -66,7 +66,7 @@ export default {
         },
         series: [
           {
-            name: "卖家城市交易总金额",
+            name: "卖家省份交易总金额",
             type: "bar",
             itemStyle: {
               normal: {
@@ -85,7 +85,7 @@ export default {
           top: "10%",
           containLabel: true,
         },
-        // toolbox: {seller-city-analysis
+        // toolbox: {
         //   show: true,
         // },
         tooltip: {
@@ -99,7 +99,7 @@ export default {
           {
             type: "pie",
             radius: [50, 120],
-            center: ["60%", "40%"],
+            center: ["50%", "40%"],
             roseType: "area",
             itemStyle: {
               borderRadius: 8,
@@ -129,19 +129,19 @@ export default {
       myChart1.setOption(this.options1, true)
     },
     getData() {
-      getSellerCityData(this.user.user_id).then((res) => {
+      getSellerProvinceData(this.user.user_id).then((res) => {
         this.amoutData = res.data.product
-        this.cityData = res.data.city
-        this.filterData(this.cityData, this.amoutData)
+        this.provinceData = res.data.province
+        this.filterData(this.provinceData, this.amoutData)
         this.total_sell_count = this.total_sell_count.sort(function (a, b) {
           return a.count_price - b.count_price
         })
         this.total_sell_count.forEach((item) => {
           this.options.series[0].data.push(item.count_price)
-          this.options.yAxis.data.push(item.city)
+          this.options.yAxis.data.push(item.province)
           let tp = {
             value: item.count_sales,
-            name: item.city,
+            name: item.province,
           }
           this.options1.series[0].data.push(tp)
         })
@@ -152,7 +152,7 @@ export default {
       let count_sales = 0
       data1.map((item1) => {
         data2.map((item2) => {
-          if (item2.city == item1.city) {
+          if (item2.province == item1.province) {
             count_price += parseInt(item2.total_amount)
             count_sales += parseInt(item2.views_sales)
           }
@@ -160,7 +160,7 @@ export default {
         let tp = {
           count_price: count_price,
           count_sales: count_sales,
-          city: item1.city,
+          province: item1.province,
         }
         this.total_sell_count.push(tp)
         count_price = 0

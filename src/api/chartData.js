@@ -87,3 +87,11 @@ export function getSellerCityData(user_id) { // 获取卖家管理中的城市�
     method: 'get',
   })
 }
+
+export function getPriceData(params) { // 获取价格分布的数据
+  return request({
+    url: `/rate/price`,
+    method: 'get',
+    params
+  })
+}
