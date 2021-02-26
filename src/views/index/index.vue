@@ -146,7 +146,7 @@ export default {
     },
     scrollTop() {
       this.scroll = document.documentElement.scrollTop || document.body.scrollTop
-      if (this.scroll >= 600 && this.scroll <= 1000) {
+      if (this.scroll >= 300 && this.scroll <= 1000) {
         this.iskbmActive = true
       } else {
         this.iskbmActive = false

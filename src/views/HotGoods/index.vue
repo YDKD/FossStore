@@ -63,11 +63,11 @@
             {{ scope.row.comment_count + " (人)" }}
           </template>
         </el-table-column>
-        <el-table-column label="录入时间" min-width="100">
+        <!-- <el-table-column label="录入时间" min-width="100">
           <template slot-scope="scope">
             {{ formatTime(scope.row.create_time) }}
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="操作" width="60">
           <template slot-scope="scope">
             <el-dropdown trigger="click">
