@@ -5,27 +5,17 @@
 * @date 2020/12/28 11:47:24
 !-->
 <template>
-  <div>
+  <div class="banner">
     <div id="header">
       <section>
         <div class="hd-bg">
-          <img
-            src="https://cdn.jsdelivr.net/gh/YDKD/Blogger/Foss-Store/skyscrapers-5838029_1920.jpg"
-          />
+          <img src="https://cdn.jsdelivr.net/gh/YDKD/Blogger/Foss-Store/skyscrapers-5838029_1920.jpg" />
           <div class="hd-header">
             <div class="hd-wrap">
-              <img
-                src="https://cdn.jsdelivr.net/gh/YDKD/Blogger/Foss-Store/icon.png"
-                alt="Foss-Store"
-              />
+              <img src="https://cdn.jsdelivr.net/gh/YDKD/Blogger/Foss-Store/icon.png" alt="Foss-Store" />
               <span>Foss-Store</span>
               <div class="hd-title">
-                <span
-                  v-for="item in titleData"
-                  :key="item.id"
-                  @click="jump(item.id)"
-                  >{{ item.name }}</span
-                >
+                <span v-for="item in titleData" :key="item.id" @click="jump(item.id)">{{ item.name }}</span>
               </div>
             </div>
           </div>
@@ -43,39 +33,55 @@
         <el-row :gutter="20">
           <el-col :span="6">
             <svg-icon icon-class="icon-jiage" class="func-svg" />
-            <h3 class="func-i-title">价格比对</h3>
-            <p>
-              为用户提供最真实的价格信息，对同类商品的价格进行比对，多元化比较，帮助用户选出最好的商品。
-            </p>
+            <h3 class="func-i-title">价格分布</h3>
+            <p>为用户提供最真实的价格信息，对同类商品的价格进行比对，对不同价格区间的商品进行可视化展示。</p>
           </el-col>
           <el-col :span="6">
-            <svg-icon
-              icon-class="icon-biaoqiankuozhan_dingdan-314"
-              class="func-svg"
-            />
+            <svg-icon icon-class="icon-biaoqiankuozhan_dingdan-314" class="func-svg" />
             <h3 class="func-i-title">订单量比对</h3>
-            <p>
-              为用户提供最真实的交易订单信息，对同类商品的订单量进行比对，找出同类商品交易量最多的商品。
-            </p>
+            <p>为用户提供最真实的交易订单信息，对同类商品的订单量进行比对，找出同类商品交易量最多的商品。</p>
           </el-col>
           <el-col :span="6">
-            <svg-icon
-              icon-class="icon-cangpeitubiao_fahuohuanhuofahuo"
-              class="func-svg"
-            />
-            <h3 class="func-i-title">发货地选择</h3>
-            <p>
-              同类商品的不同的发货地不同，可以对比找对所在地区发货最多的商品，给予用户一定的参考选择。
-            </p>
+            <svg-icon icon-class="icon-cangpeitubiao_fahuohuanhuofahuo" class="func-svg" />
+            <h3 class="func-i-title">发货时效</h3>
+            <p>同类商品的不同的发货地不同，给出相对收获时效最短的商品，给予用户一定的参考选择。</p>
           </el-col>
           <el-col :span="6">
             <svg-icon icon-class="icon-xiaoliang" class="func-svg" />
             <h3 class="func-i-title">销量比对</h3>
-            <p>
-              同类商品，在不同的价格或其他因素，或者是单一的销量因素的条件下，给用户选出最优商品
-            </p>
+            <p>同类商品，在不同的价格或其他因素，或者是单一的销量因素的条件下，给用户选出最优商品</p>
           </el-col>
         </el-row>
+      </div>
+    </div>
+    <div id="kbm">
+      <div class="layer">
+        <div class="mainCon kbm_block">
+          <h1 class="kbm_title">我们的系统收录</h1>
+          <el-row class="kbm_bottom">
+            <el-col :span="8">
+              <span class="fa fa-university"></span>
+              <h2 ref="one">
+                <countTo :startVal='0' :endVal='endVal1' :autoplay="showCount" suffix="+" :duration='3000'></countTo>
+              </h2>
+              <p>店铺</p>
+            </el-col>
+            <el-col :span="8">
+              <span class="fa fa-database"></span>
+              <h2 ref="two">
+                 <countTo :startVal='0' :endVal='endVal2' :autoplay="showCount" suffix="+" :duration='3000'></countTo>
+              </h2>
+              <p>商品</p>
+            </el-col>
+            <el-col :span="8">
+              <span class="fa fa-certificate"></span>
+              <h2 ref="three">
+                <countTo :startVal='0' :endVal='endVal3' :autoplay="showCount" suffix="+" :duration='3000'></countTo>
+              </h2>
+              <p>注册人数</p>
+            </el-col>
+          </el-row>
+        </div>
       </div>
     </div>
     <div id="about">
@@ -90,7 +96,7 @@
 
 
 <script>
-import Typed from "typed.js";
+import countTo from "vue-count-to"
 export default {
   name: "index",
   data() {
@@ -105,35 +111,69 @@ export default {
           id: "function",
         },
         {
+          name: "系统收录",
+          id: "kbm",
+        },
+        {
           name: "联系我们",
           id: "about",
         },
       ],
       isLogin: false,
-    };
+      flage: false,
+      iskbmActive: false,
+      showCount: false,
+      endVal1: 0,
+      endVal2: 0,
+      endVal3: 0,
+    }
   },
+  components: { countTo },
   methods: {
     jump(id) {
-      document.querySelector("#" + id).scrollIntoView(true);
+      document.querySelector("#" + id).scrollIntoView(true)
+      if (id == "kbm") {
+        this.iskbmActive = true
+      } else {
+        this.iskbmActive = false
+      }
+      if (this.iskbmActive == true) {
+        this.showCount = true
+        this.endVal1 = 300
+        this.endVal2 = 1000
+        this.endVal3 = 10
+      }
+    },
+    scrollTop() {
+      this.scroll = document.documentElement.scrollTop || document.body.scrollTop
+      if (this.scroll >= 600 && this.scroll <= 1000) {
+        this.iskbmActive = true
+      } else {
+        this.iskbmActive = false
+      }
+      if (this.iskbmActive == true) {
+        this.showCount = true
+        this.endVal1 = 300
+        this.endVal2 = 1000
+        this.endVal3 = 10
+      }
     },
     login() {
-      this.$router.push({ path: "/login" });
+      this.$router.push({ path: "/login" })
     },
   },
   mounted() {
     var options = {
-      strings: "越努力&#44;越幸运,If you come&#44;I will do my best.".split(
-        ","
-      ),
+      strings: "越努力&#44;越幸运,If you come&#44;I will do my best.".split(","),
       startDelay: 300,
       typeSpeed: 100,
       loop: true,
       backSpeed: 50,
-    };
+    }
 
-    var typed = new Typed(".element", options);
+    window.addEventListener("scroll", this.scrollTop)
   },
-};
+}
 </script>
 <style lang='scss' scoped>
 #header {
@@ -208,7 +248,7 @@ export default {
   }
 }
 #function {
-  height: 400px;
+  min-height: 300px;
   width: 100%;
   position: relative;
   .func-wraper {
@@ -236,6 +276,22 @@ export default {
 
   //   background-color: red;
 }
+#kbm {
+  width: 100%;
+  min-height: 300px;
+  text-align: center;
+  color: #fff;
+  font-weight: 600;
+  background: url(../../../static/img/count-bg.jpg) no-repeat center;
+  background-size: cover;
+  background-color: rgba(0, 0, 0, 0.45);
+  .layer {
+    padding-top: 10px;
+    .kbm_bottom {
+      padding-top: 10px;
+    }
+  }
+}
 #about {
   height: 140px;
   color: #fff;
@@ -245,7 +301,7 @@ export default {
     width: 400px;
     margin: 0 auto;
     text-align: left;
-    padding-top: 5px;
+    padding-top: 10px;
   }
 }
 </style>
