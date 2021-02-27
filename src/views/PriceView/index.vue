@@ -46,9 +46,7 @@ export default {
             type: "shadow",
           },
         },
-        legend: {
-          
-        },
+        legend: {},
         grid: {
           left: "3%",
           right: "4%",
@@ -88,16 +86,21 @@ export default {
   },
   methods: {
     drawLine() {
+      let myChart
+      if (process.env.NODE_ENV !== "development") {
+        myChart = echarts.init(document.getElementById("myChart"))
+      } else {
+        myChart = this.$echarts.init(document.getElementById("myChart"))
+      }
       // 基于准备好的dom，初始化echarts实例
-      let myChart = this.$echarts.init(document.getElementById("myChart"))
       // 绘制图表
       myChart.setOption(this.options, true)
     },
     getData() {
       if (parseInt(this.section) < 50) {
         this.$message.error("最小分割区间为50")
-      } else if(this.section > 100){
-        this.$message.error('最大分割单位为100')
+      } else if (this.section > 100) {
+        this.$message.error("最大分割单位为100")
       } else {
         // 清空 echarts的数组
         this.options.yAxis.data = []
@@ -108,29 +111,29 @@ export default {
         }
         getPriceData(params).then((res) => {
           this.listData = res.data[0]
-          for(let i in this.listData) {
+          for (let i in this.listData) {
             this.options.yAxis.data.push(i)
             this.options.series[0].data.push(this.listData[i])
           }
         })
       }
     },
-    exportImg(){
+    exportImg() {
       // 通过ID找到其下级的canvas
-        const charts = document.getElementById("myChart").getElementsByTagName('canvas')
-        // 创建标签
-        const element = document.createElement("a")
-        // 设置下载名称
-        element.download = "当前价格区间的商品数量图表" +".jpg"
-        // 设置地址以及文件类型
-        element.href = charts[0].toDataURL("image/jpg")
-        charts[0].getContext('2d').fillStyle = '#fff'
-        document.body.appendChild(element)
-        // 触发下载事件
-        element.click()
-        // 移除标签
-        element.remove()
-    }
+      const charts = document.getElementById("myChart").getElementsByTagName("canvas")
+      // 创建标签
+      const element = document.createElement("a")
+      // 设置下载名称
+      element.download = "当前价格区间的商品数量图表" + ".jpg"
+      // 设置地址以及文件类型
+      element.href = charts[0].toDataURL("image/jpg")
+      charts[0].getContext("2d").fillStyle = "#fff"
+      document.body.appendChild(element)
+      // 触发下载事件
+      element.click()
+      // 移除标签
+      element.remove()
+    },
   },
   watch: {
     //观察option的变化

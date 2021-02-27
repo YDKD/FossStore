@@ -7,7 +7,6 @@ function resolve(dir) {
 }
 
 const name = defaultSettings.title || 'YDKD DEVELOPMENT' // page title
-
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
 // For example, Mac: sudo npm run
@@ -94,6 +93,8 @@ module.exports = {
       }
     ])
 
+
+
     // when there are many pages, it will cause too many meaningless requests
     config.plugins.delete('prefetch')
 
@@ -117,6 +118,19 @@ module.exports = {
     config
       .when(process.env.NODE_ENV !== 'development',
         config => {
+          config.plugin('html').tap(args => {
+            args[0].isProd = true
+            return args
+          })
+          config.plugin('webpack-bundle-analyzer').use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
+          config.set('externals', {
+            vue: 'Vue',
+            'vue-router': 'VueRouter',
+            axios: 'axios',
+            'echarts': 'echarts'
+          })
+
+          config.entry('app').clear().add('./src/main-prod.js')
           config
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
@@ -125,32 +139,6 @@ module.exports = {
               inline: /runtime\..*\.js$/
             }])
             .end()
-          config
-            .optimization.splitChunks({
-              chunks: 'all',
-              cacheGroups: {
-                libs: {
-                  name: 'chunk-libs',
-                  test: /[\\/]node_modules[\\/]/,
-                  priority: 10,
-                  chunks: 'initial' // only package third parties that are initially dependent
-                },
-                elementUI: {
-                  name: 'chunk-elementUI', // split elementUI into a single package
-                  priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
-                  test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // in order to adapt to cnpm
-                },
-                commons: {
-                  name: 'chunk-commons',
-                  test: resolve('src/components'), // can customize your rules
-                  minChunks: 3, //  minimum common number
-                  priority: 5,
-                  reuseExistingChunk: true
-                }
-              }
-            })
-          // https:// webpack.js.org/configuration/optimization/#optimizationruntimechunk
-          config.optimization.runtimeChunk('single')
         }
       )
   }

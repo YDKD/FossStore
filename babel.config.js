@@ -1,3 +1,9 @@
+// 项目发布阶段需要用到的 babel 插件
+const prodPlugins = []
+if(process.env.NODE_ENV == 'production') {
+  prodPlugins.push('transform-remove-console')
+}
+
 module.exports = {
   presets: [
     // https://github.com/vuejs/vue-cli/tree/master/packages/@vue/babel-preset-app
@@ -12,5 +18,9 @@ module.exports = {
       "sourceMaps":true,
       "retainLines":true, 
     }
-  }
+  },
+  'plugins': [
+    // 发布产品时的插件数组
+    ...prodPlugins
+  ]
 }

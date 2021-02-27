@@ -119,12 +119,21 @@ export default {
   },
   methods: {
     drawLine() {
-      // 基于准备好的dom，初始化echarts实例
-      let myChart = this.$echarts.init(document.getElementById("myChart"))
+      let myChart
+      if (process.env.NODE_ENV !== "development") {
+        myChart = echarts.init(document.getElementById("myChart"))
+      } else {
+        myChart = this.$echarts.init(document.getElementById("myChart"))
+      }
       // 绘制图表
       myChart.setOption(this.options, true)
       // 基于准备好的dom，初始化echarts实例
-      let myChart1 = this.$echarts.init(document.getElementById("myChart1"))
+      let myChart1
+      if (process.env.NODE_ENV !== "development") {
+        myChart1 = echarts.init(document.getElementById("myChart1"))
+      } else {
+        myChart1 = this.$echarts.init(document.getElementById("myChart1"))
+      }
       // 绘制图表
       myChart1.setOption(this.options1, true)
     },
@@ -203,7 +212,7 @@ export default {
         result.splice(i, 0, ",")
         i++
       }
-      return logo + result.reverse().join("") + ' 元' //数组转换为字符串,前面+logo，若为负数则拼接个符号，否则拼接空字符
+      return logo + result.reverse().join("") + " 元" //数组转换为字符串,前面+logo，若为负数则拼接个符号，否则拼接空字符
     },
   },
 }
