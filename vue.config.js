@@ -1,11 +1,22 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
-
+// 配置webpack压缩
+const plugins = []
+plugins.push(
+  new CompressionWebpackPlugin({
+    filename: "[path].gz[query]",  //压缩后的文件策略
+    algorithm: "gzip",             //压缩方式
+    test: /\.js$|\.html$|\.css$/,
+    // 超过4kb压缩
+    threshold: 4096
+  })
+)
 const name = defaultSettings.title || 'YDKD DEVELOPMENT' // page title
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -80,6 +91,7 @@ module.exports = {
         '@': resolve('src')
       }
     },
+    plugins: [...plugins]
   },
   chainWebpack(config) {
     // it can improve the speed of the first screen, it is recommended to turn on preload
@@ -130,6 +142,7 @@ module.exports = {
             'echarts': 'echarts'
           })
 
+          
           config.entry('app').clear().add('./src/main-prod.js')
           config
             .plugin('ScriptExtHtmlWebpackPlugin')

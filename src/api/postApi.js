@@ -83,6 +83,23 @@ export function saveConfigCategoryData(data) { // 导出数据
 }
 
 
+export function modifyUserData(data) { // 修改用户信息
+    return request({
+        url: '/system/config_user/modify',
+        method: 'post',
+        data
+    })
+}
+
+export function deleteUser(data) { // 修改用户信息
+    return request({
+        url: `/system/config_user/del_user`,
+        method: 'delete',
+        data
+    })
+}
+
+
 export function sendUserConfigureData(data) { // 发送用户要爬取的数据
     return request({
         url: '/system/configure/custom',

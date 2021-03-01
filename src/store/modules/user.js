@@ -70,7 +70,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        if (data.code == 50008 || data.code == 50009) {
+        if (data.code == 50008 || data.code == 50009 || data.code == 50007) {
           return reject(Message.error(data.msg))
         } else {
           let { access_token, userInfo } = decrypt(data.access_token)

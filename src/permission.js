@@ -18,10 +18,11 @@ import { generateRouter } from "./utils/generate-router"
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ["/login", "/404", "/index", "/", "/register", "/dashboard/dashboard", "/monitor", "/password-reset"] // no redirect whitelist
+const whiteList = ["/login", "/404", "/index", "/", "/register", "/dashboard/dashboard", "/password-reset"] // no redirect whitelist
 
 router.beforeEach(async (to, from, next) => {
-  if (Cookies.get("UserToken") || whiteList.indexOf(to.path) != -1) {
+
+  if (Cookies.get("UserToken")) {
     if (!store.state.user.hasAuth && sessionStorage.getItem("userInfo")) {
       await store.dispatch("user/getUserRouterList")
       next({ ...to, replace: true })
@@ -29,7 +30,7 @@ router.beforeEach(async (to, from, next) => {
       if (store.state.user.userInfo.choose_type) {
         next()
       } else {
-        if (to.path == "/login" || to.path == "/monitor" || to.path =='/') {
+        if (to.path == '/monitor') {
           next()
         } else {
           Message({
@@ -40,11 +41,39 @@ router.beforeEach(async (to, from, next) => {
           next({ path: "/monitor" })
         }
       }
-      // next()
     }
   } else {
-    next({ path: "/login" })
+    if (whiteList.indexOf(to.path) != -1) {
+      next()
+    } else {
+      next({ path: '/login' })
+    }
   }
+
+  // if (Cookies.get("UserToken") || whiteList.indexOf(to.path) != -1) {
+  //   if (!store.state.user.hasAuth && sessionStorage.getItem("userInfo")) {
+  //     await store.dispatch("user/getUserRouterList")
+  //     next({ ...to, replace: true })
+  //   } else {
+  //     if (store.state.user.userInfo.choose_type) {
+  //       next()
+  //     } else {
+  //       if (to.path == "/login" || to.path == "/monitor" || to.path == '/' || to.path == '/register' || to.path == "/password-reset") {
+  //         next()
+  //       } else {
+  //         Message({
+  //           type: "info",
+  //           message: "检测当前用户未选择筛选类型，已为您自动跳转配置页!",
+  //           duration: 3000
+  //         })
+  //         next({ path: "/monitor" })
+  //       }
+  //     }
+  //     // next()
+  //   }
+  // } else {
+  //   next({ path: "/login" })
+  // }
 })
 
 // router.beforeEach(async(to, from, next) => {
