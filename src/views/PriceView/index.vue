@@ -6,16 +6,16 @@
 !-->
 <template>
   <div class="price">
-    <el-card shadow="always" :body-style="{ padding: '20px' }">
+    <el-card shadow="always" :body-style="{ padding: '10px' }">
       <div slot="header">
         <div class="card-header">
           <div class="left">
             <div class="pr-section">价格区间</div>
-            <el-tooltip content="从0开始，每隔区间单位进行一次分割, 默认分割单位为50" placement="top" effect="dark">
+            <el-tooltip content="系统已经默认为你设定好价格区间" placement="top" effect="dark">
               <svg-icon icon-class="icon-wenhao" class="func-svg"></svg-icon>
             </el-tooltip>
-            <el-input clearable placeholder="请输入价格区间" v-model="section"></el-input>
-            <el-button type="success" icon="el-icon-search" @click="getData" style="margin-left: 10px">确 定</el-button>
+            <!-- <el-input clearable placeholder="请输入价格区间" v-model="section"></el-input> -->
+            <!-- <el-button type="success" icon="el-icon-search" @click="getData" style="margin-left: 10px">确 定</el-button> -->
           </div>
           <div class="right">
             <el-button type="success" @click="exportImg">导出图片</el-button>
@@ -75,6 +75,7 @@ export default {
           },
         ],
       },
+      echarts: ''
     }
   },
   created() {
@@ -95,6 +96,7 @@ export default {
       // 基于准备好的dom，初始化echarts实例
       // 绘制图表
       myChart.setOption(this.options, true)
+      this.echarts = myChart
     },
     getData() {
       if (parseInt(this.section) < 50) {
@@ -120,19 +122,48 @@ export default {
     },
     exportImg() {
       // 通过ID找到其下级的canvas
-      const charts = document.getElementById("myChart").getElementsByTagName("canvas")
-      // 创建标签
-      const element = document.createElement("a")
-      // 设置下载名称
-      element.download = "当前价格区间的商品数量图表" + ".jpg"
-      // 设置地址以及文件类型
-      element.href = charts[0].toDataURL("image/jpg")
-      charts[0].getContext("2d").fillStyle = "#fff"
-      document.body.appendChild(element)
-      // 触发下载事件
-      element.click()
-      // 移除标签
-      element.remove()
+      // const charts = document.getElementById("myChart").getElementsByTagName("canvas")
+      var img = new Image()
+      img.src = this.echarts.getDataURL({
+        type: "png",
+        pixelRatio: 1, //放大2倍
+        backgroundColor: "#fff",
+      })
+
+      img.onload = function () {
+        var canvas = document.createElement("canvas")
+        canvas.width = img.width
+        canvas.height = img.height
+        var ctx = canvas.getContext("2d")
+        ctx.drawImage(img, 0, 0)
+        var dataURL = canvas.toDataURL("image/png")
+
+        var a = document.createElement("a")
+        // 创建一个单击事件
+        var event = new MouseEvent("click")
+        // 将a的download属性设置为我们想要下载的图片名称，若name不存在则使用‘下载图片名称’作为默认名称
+        a.download = "当前价格区间的商品数量图表.png"
+        // 将生成的URL设置为a.href属性
+        a.href = dataURL
+        // 触发a的单击事件
+        a.dispatchEvent(event)
+      }
+      // // 创建标签
+      // const element = document.createElement("a")
+      // // 设置下载名称
+      // element.download = "当前价格区间的商品数量图表" + ".jpg"
+      // // 设置地址以及文件类型
+      // element.href = charts[0].toDataURL({
+      //   type: "jpg",
+      //   pixelRatio: 2, //放大2倍
+      //   backgroundColor: "#fff",
+      // })
+      // charts[0].getContext("2d").fillStyle = "#fff"
+      // document.body.appendChild(element)
+      // // 触发下载事件
+      // element.click()
+      // // 移除标签
+      // element.remove()
     },
   },
   watch: {
@@ -175,8 +206,8 @@ export default {
       min-width: 60px;
     }
     .svg-icon {
-      width: 3em;
-      height: 3em;
+      width: 2em;
+      height: 2em;
       vertical-align: -0.48em;
       margin-right: 40px;
     }

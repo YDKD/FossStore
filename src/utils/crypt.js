@@ -26,7 +26,7 @@ function encryption(data) {
   return rsaBs64
 }
 
-function decrypt(data) {
+function decrypt(data, isdecrytUser) {
   // 解密
   var encrypt = new JSEncrypt()
   var privateKey = `-----BEGIN PRIVATE KEY-----
@@ -46,13 +46,24 @@ function decrypt(data) {
   o7se1nvumPW8JJg=
   -----END PRIVATE KEY-----`
   encrypt.setPrivateKey(privateKey) //私钥
-  // 分段
-  let strArr = data.split(':')
-  let userInfo = JSON.parse(encrypt.decrypt(strArr[1]))
-  return {
-    access_token: strArr[0],
-    userInfo: userInfo
+  if (isdecrytUser) {
+    // 分段
+    let strArr = data.split(':')
+    let userInfo = JSON.parse(encrypt.decrypt(strArr[1]))
+    return {
+      access_token: strArr[0],
+      userInfo: userInfo
+    }
+  } else {
+    let strArr = data.split(':') //分段解码
+    let BaseStr = '' //base64
+    strArr.forEach(item => {
+      BaseStr += encrypt.decrypt(item);
+    })
+    let userDetail = JSON.parse(BaseStr) //解析成js对象
+    return userDetail
   }
+
 }
 
 export {

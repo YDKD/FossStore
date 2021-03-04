@@ -73,7 +73,7 @@ const actions = {
         if (data.code == 50008 || data.code == 50009 || data.code == 50007) {
           return reject(Message.error(data.msg))
         } else {
-          let { access_token, userInfo } = decrypt(data.access_token)
+          let { access_token, userInfo } = decrypt(data.access_token, true)
           commit('EXP_TIME', data.exp)
           commit('USER_INFO', userInfo)
           setToken(access_token)

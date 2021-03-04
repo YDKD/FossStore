@@ -134,7 +134,7 @@ export default {
           this.$store
             .dispatch("user/loginUsername", this.loginForm)
             .then(() => {
-              this.$router.push({ path: "/dashboard/dashboard" })
+              this.$router.push({ path: "/dashboard_person" })
               this.loading = false
               // console.log(this.$store.state.user.userInfo);
             })

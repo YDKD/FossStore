@@ -28,7 +28,7 @@
         <el-table-column label="用户类型">
           <template slot-scope="scope">
             <span v-if="scope.row.role === 3">管理员</span>
-            <span v-else>普通企业用户</span>
+            <span v-else>普通用户</span>
           </template>
         </el-table-column>
         <el-table-column label="创建时间">
@@ -54,8 +54,8 @@
       <!-- 新增 -->
       <el-dialog title="创建新用户" :visible.sync="dialogAddFormVisible" @close="resetAddForm('addUserForm')">
         <el-form :model="form" ref="addUserForm" class="addInput" :rules="addUserRules" label-width="120px">
-          <el-form-item label="用户名：" prop="account">
-            <el-input v-model="form.account" autocomplete="off"></el-input>
+          <el-form-item label="用户名：" prop="username">
+            <el-input v-model="form.username" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="密码：" prop="password">
             <el-input type="password" v-model="form.password" autocomplete="off"></el-input>
@@ -67,7 +67,7 @@
             <el-input v-model="form.email" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="有效期至：" prop="effective_time">
-            <el-date-picker :picker-options="pickerOptions" v-model="form.effective_time" type="date" placeholder="请选择有效日期，不填默认选择2099-01-01"> </el-date-picker>
+            <el-date-picker :picker-options="pickerOptions" v-model="form.effective_time" type="date" placeholder="请选择有效日期，不填默认有效期为7天"> </el-date-picker>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -97,23 +97,29 @@
 </template>
 
 <script>
-import { getUserList, validatorUsernameExist, resetPsw } from "@/api/chartData"
+import { getUserList, validatorUsernameExist, resetPsw, validatorEmailExist } from "@/api/chartData"
 import { parseTime, rTime } from "@/utils/index"
 import { encryption } from "@/utils/crypt"
-import { modifyUserData, deleteUser } from "@/api/postApi"
+import { modifyUserData, deleteUser, createUser } from "@/api/postApi"
 export default {
   name: "config-members",
   data() {
     var validatorEmail = (rule, value, callback) => {
       if (value) {
-        let regUrl = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+        let regUrl = /^[a-zA-Z0-9_-]+@([a-z0-9]+[-a-z0-9]*[a-z0-9]+\.)+(com|cn|net|org)$/
         if (regUrl.test(value)) {
-          callback()
+          validatorEmailExist(value).then((res) => {
+            if (res.data.status == 201) {
+              callback('该邮箱已被注册');
+            } else {
+              callback();
+            }
+          });
         } else {
           callback("邮箱格式不正确")
         }
       } else {
-        callback()
+        callback("请输入邮箱")
       }
     }
     // 验证用户名是否已被注册
@@ -154,10 +160,10 @@ export default {
     return {
       user: "",
       form: {
-        username: "",
-        password: "",
-        confirmPassword: "",
-        email: "",
+        username: "efda1",
+        password: "123456",
+        confirmPassword: "123456",
+        email: "1606354057@qq.com",
         effective_time: "",
       },
       loading: false,
@@ -174,10 +180,16 @@ export default {
         effective_time: [{ required: true, message: "请选择有效期", trigger: "blur" }],
       },
       addUserRules: {
-        account: [{ required: true, validator: validatorAccount, trigger: "blur" }],
-        password: [{ required: true, message: "请输入密码", trigger: "blur" }],
-        confirmPassword: [{ required: true, validator: validatorConfirmPassword, trigger: "blur" }],
-        email: [{ required: false, validator: validatorEmail, trigger: "blur" }],
+        username: [{ required: true, validator: validatorAccount, trigger: "blur" }],
+        password: [
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { required: true, min: 5, max: 16, message: "密码长度在5,16位", trigger: "blur" },
+        ],
+        confirmPassword: [
+          { required: true, validator: validatorConfirmPassword, trigger: "blur" },
+          { required: true, min: 5, max: 16, message: "密码长度在5,16位", trigger: "blur" },
+        ],
+        email: [{ required: true, validator: validatorEmail, trigger: "blur" }],
         effective_time: [{ required: false, message: "请选择有效期", trigger: "blur" }],
       },
       modifyDate: "", // 修改日期
@@ -305,16 +317,17 @@ export default {
       this.$refs["addUserForm"].validate((valid) => {
         if (valid) {
           const params = {
-            enterpriseId: this.user.enterprise_id,
-            account: this.form.account,
-            psw: this.form.password,
+            username: this.form.username,
+            password: this.form.password,
             email: this.form.email,
-            role: 0,
-            createTime: new Date().getTime(),
-            deadline: this.form.effective_time ? new Date(this.form.effective_time).getTime() : new Date("2099-1-1").getTime(),
+            is_register: false,
+            effective_time: this.form.effective_time ? new Date(this.form.effective_time).getTime() : 0
           }
-          postAddMember(params).then((resp) => {
-            if (resp.status == "Ok") {
+          let para = {
+            data: encryption(params)
+          }
+          createUser(para).then((resp) => {
+            if (resp.data.status == 200) {
               this.dialogAddFormVisible = false
               this.getList()
               this.$message({

@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2020-12-26 14:10:18
- * @LastEditTime: 2021-01-11 14:55:36
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \FossStore\src\utils\request.js
- */
 import axios from 'axios'
 import { MessageBox, Message, } from 'element-ui'
 import store from '@/store'
@@ -79,12 +71,24 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error) // for debug
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
+    if (error.response) {
+      if (error.response.status === 403) {
+        router.replace({
+          path: '/403'
+        })
+      }
+      if (error.response.status === 404 ) {
+        router.replace({
+          path: '/404',
+          query: { redirect: router.currentRoute.fullPath }
+        })
+      } else if(error.response.status === 502) {
+        router.replace({
+          path: '/service-error',
+          query: { redirect: router.currentRoute.fullPath }
+        })
+      }
+    }
     return Promise.reject(error)
   }
 )

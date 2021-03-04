@@ -53,8 +53,8 @@
         </el-table-column>
         <el-table-column label="描述相比同行业">
           <template slot-scope="scope">
-            <span style="color: #ff444a" v-if="scope.row.mg >= '0.00%'">高{{ scope.row.mg }}%<svg-icon icon-class="icon-down-jiantou" class="icon-down-jiantou"></svg-icon></span>
-            <span style="color: #13740e" v-else>低{{ scope.row.mg }}%<svg-icon icon-class="icon-down-copy" class="func-svg"></svg-icon></span>
+            <span style="color: #ff444a" v-if="scope.row.mg >= '0.00%'">高{{ scope.row.mg }}<svg-icon icon-class="icon-down-jiantou" class="icon-down-jiantou"></svg-icon></span>
+            <span style="color: #13740e" v-else>低{{ scope.row.mg }}<svg-icon icon-class="icon-down-copy" class="func-svg"></svg-icon></span>
           </template>
         </el-table-column>
         <el-table-column label="卖家服务态度">
@@ -65,8 +65,8 @@
         </el-table-column>
         <el-table-column label="服务相比同行业">
           <template slot-scope="scope">
-            <span style="color: #ff444a" v-if="scope.row.sg >= '0.00%'">高{{ scope.row.sg }}%<svg-icon icon-class="icon-down-jiantou" class="icon-down-jiantou"></svg-icon></span>
-            <span style="color: #13740e" v-else>低{{ scope.row.sg }}%<svg-icon icon-class="icon-down-copy" class="func-svg"></svg-icon></span>
+            <span style="color: #ff444a" v-if="scope.row.sg >= '0.00%'">高{{ scope.row.sg }}<svg-icon icon-class="icon-down-jiantou" class="icon-down-jiantou"></svg-icon></span>
+            <span style="color: #13740e" v-else>低{{ scope.row.sg }}<svg-icon icon-class="icon-down-copy" class="func-svg"></svg-icon></span>
           </template>
         </el-table-column>
         <el-table-column label="物流服务质量">
@@ -77,8 +77,8 @@
         </el-table-column>
         <el-table-column label="物流相比同行业">
           <template slot-scope="scope">
-            <span style="color: #ff444a" v-if="scope.row.cg >= '0.00%'">高{{ scope.row.cg }}%<svg-icon icon-class="icon-down-jiantou" class="icon-down-jiantou"></svg-icon></span>
-            <span style="color: #13740e" v-else>低{{ scope.row.cg }}%<svg-icon icon-class="icon-down-copy" class="func-svg"></svg-icon></span>
+            <span style="color: #ff444a" v-if="scope.row.cg >= '0.00%'">高{{ scope.row.cg }}<svg-icon icon-class="icon-down-jiantou" class="icon-down-jiantou"></svg-icon></span>
+            <span style="color: #13740e" v-else>低{{ scope.row.cg }}<svg-icon icon-class="icon-down-copy" class="func-svg"></svg-icon></span>
           </template>
         </el-table-column>
         <el-table-column label="操作" width="60">

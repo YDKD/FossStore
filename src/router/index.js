@@ -29,6 +29,11 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/403',
+    component: () => import('@/views/ErrorPage/403.vue'),
+    hidden: true
+  },
+  {
     path: '/register',
     component: () => import('@/views/register/index'),
     hidden: true
@@ -39,17 +44,17 @@ export const constantRoutes = [
     hidden: true
   },
 
-  {
-    path: '/dashboard',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: '统计概览', icon: 'icon-gailan' }
-    }]
-  },
+  // {
+  //   path: '/dashboard',
+  //   component: Layout,
+  //   redirect: '/dashboard',
+  //   children: [{
+  //     path: 'dashboard',
+  //     name: 'dashboard',
+  //     component: () => import('@/views/dashboard/index'),
+  //     meta: { title: '统计概览', icon: 'icon-gailan' }
+  //   }]
+  // },
 
 ]
 

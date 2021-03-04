@@ -96,6 +96,7 @@
 
 
 <script>
+import Typed from 'typed.js'
 import countTo from "vue-count-to"
 export default {
   name: "index",
@@ -172,6 +173,7 @@ export default {
     }
 
     window.addEventListener("scroll", this.scrollTop)
+    var typed = new Typed(".element", options);
   },
 }
 </script>

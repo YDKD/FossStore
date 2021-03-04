@@ -111,3 +111,17 @@ export function getPriceData(params) { // 获取价格分布的数据
     params
   })
 }
+
+export function getTables(user_id) { // 获取数据库中的表
+  return request({
+    url: `/auth/tables/${user_id}`,
+    method: 'get',
+  })
+}
+
+export function getUploadInfo() { // 获取上传信息
+  return request({
+    url: `/auth/upload/status`,
+    method: 'get',
+  })
+}

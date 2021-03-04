@@ -205,6 +205,7 @@ export default {
             password: this.registerForm.password,
             postCode: this.registerForm.code,
             email: this.registerForm.email,
+            is_register: true
           };
           let para = {
             data: encryption(params),
