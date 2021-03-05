@@ -91,7 +91,12 @@ module.exports = {
         '@': resolve('src')
       }
     },
-    plugins: [...plugins]
+    plugins: [...plugins],
+    // 打包体积
+    performance: {
+      "maxEntrypointSize": 10000000,
+      "maxAssetSize": 30000000
+    }
   },
   chainWebpack(config) {
     // it can improve the speed of the first screen, it is recommended to turn on preload
@@ -134,7 +139,10 @@ module.exports = {
             args[0].isProd = true
             return args
           })
-          config.plugin('webpack-bundle-analyzer').use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
+          // 打包分析
+          // config.plugin('webpack-bundle-analyzer').use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
+
+          // CDN引入
           config.set('externals', {
             vue: 'Vue',
             'vue-router': 'VueRouter',
@@ -142,8 +150,11 @@ module.exports = {
             'echarts': 'echarts'
           })
 
-          
+          // 分类入口
           config.entry('app').clear().add('./src/main-prod.js')
+
+
+
           config
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
