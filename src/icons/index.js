@@ -11,7 +11,7 @@ import SvgIcon from '@/components/SvgIcon'// svg component
 import './font/iconfont'
 // register globally
 Vue.component('svg-icon', SvgIcon)
-let url = 'http://at.alicdn.com/t/font_2296967_poh6onkj5yr.js'
+let url = 'http://at.alicdn.com/t/font_2296967_8bzz5riu2vu.js'
 const link = document.createElement('script')
 link.type = "text/javascript"
 link.src = url

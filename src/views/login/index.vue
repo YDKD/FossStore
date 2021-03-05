@@ -1,5 +1,6 @@
 <template>
   <div class="login-container">
+    <div class="backHome" @click="backHome"><svg-icon icon-class="icon-zuojiantou-copy" class="func-svg" />返回首页</div>
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" label-position="left">
       <div class="title-container">
         <h3 class="title">登 录</h3>
@@ -128,6 +129,9 @@ export default {
     },
     jumpResetPassword() {
       this.$router.push({ path: "/password-reset" })
+    },
+    backHome(){
+      this.$router.push({path: '/'})
     },
     handleLogin() {
       this.$refs.loginForm.validate((valid) => {
@@ -413,5 +417,10 @@ $jump: #4b45a1;
 .btn:hover::after {
   width: calc(100% + 4px);
   height: calc(100% + 4px);
+}
+.backHome {
+  margin: 30px;
+  cursor: pointer;
+  color: #dcc1c1;
 }
 </style>
