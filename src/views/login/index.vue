@@ -29,7 +29,10 @@
         />
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width: 100%; margin-bottom: 30px" @click.native.prevent="handleLogin">Login</el-button>
+      <button class="btn">
+        <label @click.prevent="handleLogin">login</label>
+      </button>
+      <!-- <el-button :loading="loading" type="primary" style="width: 100%; margin-bottom: 30px" @click.native.prevent="handleLogin">Login</el-button> -->
 
       <div class="tips">
         <span style="margin-right: 20px" @click="jumpResetPassword">忘记密码？</span>
@@ -134,7 +137,9 @@ export default {
           this.$store
             .dispatch("user/loginUsername", this.loginForm)
             .then(() => {
-              this.$router.push({ path: "/dashboard_person" })
+              let { role } = this.$store.state.user.userInfo
+              let path = role === 3 ? "/dashboard_person" : "/hot_goods"
+              this.$router.push({ path: path })
               this.loading = false
               // console.log(this.$store.state.user.userInfo);
             })
@@ -340,5 +345,73 @@ $jump: #4b45a1;
 .svg-icon {
   padding-left: 2px;
   width: 2em;
+}
+.btn {
+  background: none;
+  border: 0;
+  outline: 0;
+  color: aquamarine;
+  font-family: 'JetBrains Mono';
+  font-size: 14px;
+  cursor: pointer;
+  border: 2px solid aquamarine;
+  width: 100%;
+  height: 40px;
+  position: relative;
+  margin-bottom: 10px;
+
+}
+
+.btn label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  line-height: 34px;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: rgb(239, 155, 148);
+  cursor: pointer;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: -2px;
+  width: 0px;
+  height: 0;
+  z-index: 0;
+  background-color: #ff4e8a;
+  transition: width .5s,height .5s;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 0;
+  height: 0;
+  z-index: 0;
+  background-color: #ff4e8a;
+  transition: width .5s,height .5s;
+
+  /* width: calc(100% + 4px);
+  height: calc(100% + 4px); */
+}
+
+.btn:hover {
+  color: #ff4e8a;
+}
+
+.btn:hover::before {
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+}
+
+.btn:hover::after {
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
 }
 </style>
