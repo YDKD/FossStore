@@ -8,6 +8,8 @@ import getPageTitle from "@/utils/get-page-title"
 import Cookies from "js-cookie"
 import { generateRouter } from "./utils/generate-router"
 import { removeToken } from '@/utils/auth'
+import { Store } from '@/utils/store'
+let storage = new Store()
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ["/login", "/404", "/index", "/", "/register", "/dashboard/dashboard", "/password-reset"] // no redirect whitelist
@@ -15,9 +17,20 @@ const whiteList = ["/login", "/404", "/index", "/", "/register", "/dashboard/das
 router.beforeEach(async (to, from, next) => {
 
   if (Cookies.get("UserToken")) {
-    if (!store.state.user.hasAuth && sessionStorage.getItem("userInfo")) {
-      await store.dispatch("user/getUserRouterList")
-      next({ ...to, replace: true })
+    if (!store.state.user.hasAuth) {
+      let expires = storage.getItem('userInfo')
+      if (expires) {
+        await store.dispatch("user/getUserRouterList")
+        next({ ...to, replace: true })
+      } else {
+        Message({
+          type: "info",
+          message: "当前账户已过期，请重新登录!",
+        })
+        Cookies.remove('UserToken')
+        storage.clear()
+        next({ path: '/login' })
+      }
     } else {
       if (store.state.user.userInfo.choose_type) {
         next()

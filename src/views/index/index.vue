@@ -20,7 +20,21 @@
             </div>
           </div>
           <div class="login">
-            <span v-if="isLogin" class="login-account">123123</span>
+            <el-dropdown v-if="isLogin" class="avatar-container" trigger="click">
+              <div class="avatar-wrapper">
+                <span class="nav-username">{{ userInfo.username }}</span>
+                <i class="el-icon-caret-bottom" />
+              </div>
+              <el-dropdown-menu slot="dropdown" class="user-dropdown">
+                <router-link :to="toPath">
+                  <el-dropdown-item> 首 页 </el-dropdown-item>
+                </router-link>
+
+                <!-- <el-dropdown-item divided @click.native="logout">
+                  <span style="display: block">退 出</span>
+                </el-dropdown-item> -->
+              </el-dropdown-menu>
+            </el-dropdown>
             <el-button v-else round @click="login">登录</el-button>
           </div>
           <div class="main-titlt">Foss-Store</div>
@@ -62,21 +76,21 @@
             <el-col :span="8">
               <span class="fa fa-university"></span>
               <h2 ref="one">
-                <countTo :startVal='0' :endVal='endVal1' :autoplay="showCount" suffix="+" :duration='3000'></countTo>
+                <countTo :startVal="0" :endVal="endVal1" :autoplay="showCount" suffix="+" :duration="3000"></countTo>
               </h2>
               <p>店铺</p>
             </el-col>
             <el-col :span="8">
               <span class="fa fa-database"></span>
               <h2 ref="two">
-                 <countTo :startVal='0' :endVal='endVal2' :autoplay="showCount" suffix="+" :duration='3000'></countTo>
+                <countTo :startVal="0" :endVal="endVal2" :autoplay="showCount" suffix="+" :duration="3000"></countTo>
               </h2>
               <p>商品</p>
             </el-col>
             <el-col :span="8">
               <span class="fa fa-certificate"></span>
               <h2 ref="three">
-                <countTo :startVal='0' :endVal='endVal3' :autoplay="showCount" suffix="+" :duration='3000'></countTo>
+                <countTo :startVal="0" :endVal="endVal3" :autoplay="showCount" suffix="+" :duration="3000"></countTo>
               </h2>
               <p>注册人数</p>
             </el-col>
@@ -96,7 +110,7 @@
 
 
 <script>
-import Typed from 'typed.js'
+import Typed from "typed.js"
 import countTo from "vue-count-to"
 export default {
   name: "index",
@@ -127,6 +141,8 @@ export default {
       endVal1: 0,
       endVal2: 0,
       endVal3: 0,
+      userInfo: "",
+      toPath: "",
     }
   },
   components: { countTo },
@@ -163,6 +179,11 @@ export default {
       this.$router.push({ path: "/login" })
     },
   },
+  created() {
+    this.userInfo = this.$store.state.user.userInfo
+    this.isLogin = this.userInfo ? true : false
+    this.toPath = this.userInfo.role === 3 ? "/dashboard_person" : "/hot_goods"
+  },
   mounted() {
     var options = {
       strings: "越努力&#44;越幸运,If you come&#44;I will do my best.".split(","),
@@ -173,7 +194,11 @@ export default {
     }
 
     window.addEventListener("scroll", this.scrollTop)
-    var typed = new Typed(".element", options);
+    var typed = new Typed(".element", options)
+    let coutScroll = document.querySelector("#kbm").offsetTop
+    if (coutScroll > 800) {
+      this.iskbmActive = true
+    }
   },
 }
 </script>
@@ -305,5 +330,9 @@ export default {
     text-align: left;
     padding-top: 10px;
   }
+}
+.nav-username {
+  font-size: 18px;
+  color: #fff;
 }
 </style>

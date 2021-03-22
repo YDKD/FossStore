@@ -14,6 +14,8 @@ import { Message } from 'element-ui'
 import { formatRouterTree, generateRouter } from '@/utils/generate-router'
 import router from '@/router/index'
 import { getUserRourterListById } from '@/api/chartData'
+import { Store } from '@/utils/store'
+let storage = new Store()
 const getDefaultState = () => {
   return {
     name: '',
@@ -22,8 +24,7 @@ const getDefaultState = () => {
     user_place: '',
     avatar: '',
     text: '',
-    exp: sessionStorage.getItem(`exp`) || 0,
-    userInfo: JSON.parse(sessionStorage.getItem('userInfo')) || '',
+    userInfo: storage.getItem('userInfo') || '',
     userRouterList: JSON.parse(sessionStorage.getItem('userRouterList')) || []
   }
 }
@@ -46,12 +47,12 @@ const mutations = {
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   },
-  EXP_TIME: (state, exp) => {
-    sessionStorage.setItem(`exp`, exp)
-    state.exp = exp
-  },
   USER_INFO: (state, userInfo) => {
-    sessionStorage.setItem(`userInfo`, JSON.stringify(userInfo))
+    storage.setItem({
+      name: 'userInfo',
+      value: userInfo,
+    })
+    // sessionStorage.setItem(`userInfo`, JSON.stringify(userInfo))
     state.userInfo = userInfo
   },
   USER_ROUTER_LIST: (state, userRouterList) => {
@@ -74,7 +75,8 @@ const actions = {
           return reject(Message.error(data.msg))
         } else {
           let { access_token, userInfo } = decrypt(data.access_token, true)
-          commit('EXP_TIME', data.exp)
+          // commit('EXP_TIME', data.exp)
+          userInfo.expires = data.exp
           commit('USER_INFO', userInfo)
           setToken(access_token)
           resolve()
@@ -127,6 +129,7 @@ const actions = {
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
       logout(state.userInfo.username).then(() => {
+        storage.clear()
         removeToken() // must remove  token  first
         resolve()
       }).catch(error => {

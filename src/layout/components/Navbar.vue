@@ -1,10 +1,6 @@
 <template>
   <div class="navbar">
-    <hamburger
-      :is-active="sidebar.opened"
-      class="hamburger-container"
-      @toggleClick="toggleSideBar"
-    />
+    <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
     <breadcrumb class="breadcrumb-container" />
     <div class="location">
@@ -23,10 +19,7 @@
           <!-- <router-link to="/">
             <el-dropdown-item> Home </el-dropdown-item>
           </router-link> -->
-          <a
-            target="_blank"
-            href="https://github.com/YDKD"
-          >
+          <a target="_blank" href="https://github.com/YDKD">
             <el-dropdown-item>Github</el-dropdown-item>
           </a>
           <el-dropdown-item divided @click.native="logout">
@@ -39,12 +32,12 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import Breadcrumb from "@/components/Breadcrumb";
-import Hamburger from "@/components/Hamburger";
-import axios from "axios";
-import { getUserLoginPlace } from "@/api/chartData";
-import { jsonp } from "vue-jsonp";
+import { mapGetters } from "vuex"
+import Breadcrumb from "@/components/Breadcrumb"
+import Hamburger from "@/components/Hamburger"
+import axios from "axios"
+import { getUserLoginPlace } from "@/api/chartData"
+import { jsonp } from "vue-jsonp"
 export default {
   components: {
     Breadcrumb,
@@ -56,7 +49,7 @@ export default {
   data() {
     return {
       location_place: "",
-    };
+    }
   },
   created() {
     axios.get("https://api.ipify.org/").then((res) => {
@@ -70,16 +63,16 @@ export default {
         60000
       ).then((resp) => {
         let res_data = resp.result.ad_info
-        this.location_place =res_data.nation+ '、'+ res_data.province + "、" + res_data.city + '、' + res_data.district
+        this.location_place = res_data.nation + "、" + res_data.province + "、" + res_data.city + "、" + res_data.district
         let params = {
           user_id: this.$store.getters.userInfo.user_id,
           user_place: this.location_place,
-          location: resp.result.location.lat + ',' + resp.result.location.lng
-        };
+          location: resp.result.location.lat + "," + resp.result.location.lng,
+        }
         getUserLoginPlace(params).then((res) => {
-          this.$store.commit("user/USER_PLACE", res_data.city);
-        });
-      });
+          this.$store.commit("user/USER_PLACE", res_data.city)
+        })
+      })
       // axios.get("https://restapi.amap.com/v3/ip", {
       //     params: {
       //       key: "257ece5abf371510c69e13639b9dc480",
@@ -88,18 +81,19 @@ export default {
       //   }).then((resp) => {
       //
       //   });
-    });
+    })
   },
   methods: {
     toggleSideBar() {
-      this.$store.dispatch("app/toggleSideBar");
+      this.$store.dispatch("app/toggleSideBar")
     },
     async logout() {
-      await this.$store.dispatch("user/logout");
-      this.$router.push({ path: "/login" });
+      await this.$store.dispatch("user/logout")
+      this.$router.push({ path: "/login" })
+      this.$router.go(0)
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>

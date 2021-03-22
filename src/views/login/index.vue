@@ -1,6 +1,8 @@
 <template>
   <div class="login-container">
-    <div class="backHome" @click="backHome"><svg-icon icon-class="icon-zuojiantou-copy" class="func-svg" />返回首页</div>
+    <div class="backHome" @click="backHome"><svg-icon icon-class="icon-zuojiantou-copy" class="func-svg" />
+      <router-link to="/">返回首页</router-link>
+    </div>
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" label-position="left">
       <div class="title-container">
         <h3 class="title">登 录</h3>
@@ -131,7 +133,7 @@ export default {
       this.$router.push({ path: "/password-reset" })
     },
     backHome(){
-      this.$router.push({path: '/'})
+      // this.$router.push({path: '/'})
     },
     handleLogin() {
       this.$refs.loginForm.validate((valid) => {
