@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       title: 'Foss-Store',
-      logo: 'https://cdn.jsdelivr.net/gh/YDKD/Blogger/Foss-Store/fsLogo.png'
+      logo: 'https://cdn.jsdelivr.net/gh/YDKD/Blogger/Foss-Store/fsLogo1.png'
     }
   }
 }
