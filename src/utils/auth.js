@@ -22,6 +22,7 @@ export function removeToken() {
   sessionStorage.removeItem('userInfo')
   sessionStorage.removeItem('exp')
   sessionStorage.removeItem('userRouterList')
+  Cookies.removeItem('UserToken')
   Cookies.remove(TokenKey)
   return
 }

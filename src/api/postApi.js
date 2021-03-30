@@ -72,7 +72,7 @@ export function exportData(data) { // 导出数据
         method: 'post',
         data
     })
-}
+} 
 
 export function saveConfigCategoryData(data) { // 导出数据
     return request({

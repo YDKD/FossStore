@@ -1,3 +1,4 @@
+import {removeToken} from '@/utils/auth'
 export class Store {
     constructor(name) {
         this.name = name
@@ -44,6 +45,7 @@ export class Store {
             if (item.expires < new Date().getTime()) {
                 // 缓存过期 清除缓存，返回 false
                 localStorage.removeItem(name)
+                removeToken()
                 return false
             } else {
                 // 未过期
