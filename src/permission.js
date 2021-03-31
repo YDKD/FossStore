@@ -55,6 +55,7 @@ router.beforeEach(async (to, from, next) => {
       removeToken()
     }
   }
+  
 
   // if (Cookies.get("UserToken") || whiteList.indexOf(to.path) != -1) {
   //   if (!store.state.user.hasAuth && sessionStorage.getItem("userInfo")) {
