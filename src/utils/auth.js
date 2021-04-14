@@ -19,7 +19,7 @@ export function setToken(token) {
 }
 
 export function removeToken() {
-  sessionStorage.removeItem('userInfo')
+  localStorage.removeItem('userInfo')
   sessionStorage.removeItem('exp')
   sessionStorage.removeItem('userRouterList')
   Cookies.remove(TokenKey)

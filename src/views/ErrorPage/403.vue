@@ -11,13 +11,14 @@
           invalid, client certificate has expired or is not yet valid, passport logon failed, source access denied, infinite depth is denied, too many requests from the same client ip</b
         >...]
       </p>
-      <p>> <span>SOME PAGES ON THIS SERVER THAT YOU DO HAVE PERMISSION TO ACCESS</span>: [<a href="/">点击返回首页</a>...]</p>
+      <p>> <span>SOME PAGES ON THIS SERVER THAT YOU DO HAVE PERMISSION TO ACCESS</span>: [<a href="/" @click="backHome">点击返回首页</a>...]</p>
       <p>> <span>HAVE A NICE DAY SIR AXLEROD :-)</span></p>
     </div>
   </div>
 </template>
 
 <script>
+import {removeToken} from '@/utils/auth'
 export default {
   name: "Page403",
   data() {
@@ -40,6 +41,11 @@ export default {
     //   }, 10)
     // }, 0)
   },
+  methods: {
+    backHome() {
+      removeToken()
+    }
+  }
 }
 </script>
 <style lang='scss' scoped>

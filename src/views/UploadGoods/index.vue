@@ -28,8 +28,9 @@
         </el-table-column>
         <el-table-column label="上传状态" align="center">
           <template slot-scope="scope">
-            <span v-if="scope.row.upload_status == 5" class="el-icon-check lastsuccess"></span>
-            <span v-else class="el-icon-close lasterror"></span>
+            <span v-if="scope.row.upload_status == 3" class="el-icon-check lastsuccess"></span>
+            <span v-else-if="scope.row.upload_status == -1 || scope.row.upload_status == -2" class="el-icon-close lasterror"></span>
+            <span v-else-if="scope.row.upload_status == 2" style="font-size: 20px; color: #ffcc00; font-weight: bold; padding-left: 5px; cursor: default">!</span>
           </template>
         </el-table-column>
         <el-table-column label="状态信息" prop="msg" align="center"></el-table-column>
