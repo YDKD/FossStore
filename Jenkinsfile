@@ -4,9 +4,7 @@ pipeline {
     environment {
         Name = 'YDKD'
         sshHostName = "server"
-        docker = "/usr"
         cacheDir = 'stage' //定义缓存的目录名字
-        SERVICENAME = 'nestjs'
             cachePackage = "${cacheDir}/package.json" //定义缓存的package.json
             cacheCommitIDFile = "${cacheDir}/.commitIDCache.txt" //把成功打包的commitID缓存到这里
                 artifactsDir = "${cacheDir}/artifacts" //制品缓存的目录，构建成功的制品我们放这里
@@ -19,27 +17,12 @@ pipeline {
     }
 
     stages {
-        stage('init') {
-
-            when {
-                anyOf {               //   多分支才有的判断，一个真就通过过
-                    branch 'dev'
-                    branch 'master'
-                }
-            }
-
-            steps {
-                script{
-                  def dockerPath = tool 'docker' //全局配置里的docker
-                  env.PATH = "${dockerPath}/bin:${env.PATH}" //添加了系统环境变量上
-                }
-            }
-        }
         stage('pre-build') {           //  自定义步骤 pre-build
 
             when {
                 anyOf {               //   多分支才有的判断，一个真就通过过
                     branch 'dev'
+                    branch 'release'
                     branch 'master'
                 }
             }
@@ -62,6 +45,7 @@ pipeline {
             when {
                 anyOf {
                     branch 'dev'
+                    branch 'release'
                     branch 'master'
                 }
                 expression{
@@ -87,27 +71,44 @@ pipeline {
 
                     steps {
                         echo 'build-dev'
-                        sh './jenkins/script/build-images.sh'
+                        sh './jenkins/script/build-dev.sh'
                     }
                 }
 
-                // stage('build-master') {
-                //     when {
-                //         branch 'master'
-                //     }
+                stage('build-release') {
+                    when {
+                        branch 'release'
+                    }
 
-                //     agent {
-                //         docker {
-                //             image 'node:14.18.0'
-                //             reuseNode true
-                //         }
-                //     }
+                    agent {
+                        docker {
+                            image 'node:14.18.0'
+                            reuseNode true
+                        }
+                    }
 
-                //     steps {
-                //         echo 'build-master'
-                //         sh './jenkins/script/build-master.sh'
-                //     }
-                // }
+                    steps {
+                        echo 'build-release'
+                        sh './jenkins/script/build-release.sh'
+                    }
+                }
+                stage('build-master') {
+                    when {
+                        branch 'master'
+                    }
+
+                    agent {
+                        docker {
+                            image 'node:14.18.0'
+                            reuseNode true
+                        }
+                    }
+
+                    steps {
+                        echo 'build-master'
+                        sh './jenkins/script/build-master.sh'
+                    }
+                }
             }
         }
 
@@ -131,6 +132,7 @@ pipeline {
                 }
                 anyOf {
                     branch 'dev'
+                    branch 'release'
                     branch 'master'
                     }
                 }
@@ -148,6 +150,7 @@ pipeline {
             when {
                 anyOf {
                     branch 'dev'
+                    branch 'release'
                 }
             }
 
