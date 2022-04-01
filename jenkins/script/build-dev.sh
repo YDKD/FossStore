@@ -2,6 +2,6 @@
 
 # set -x
 
-npm run build-dev || exit 1
+npm run build:prod || exit 1
 
 # set +x
